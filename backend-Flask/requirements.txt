@@ -1,0 +1,29 @@
+-i https://pypi.org/simple
+aniso8601==8.0.0
+atomicwrites==1.4.0 ; sys_platform == 'win32'
+attrs==19.3.0
+click==7.1.2
+colorama==0.4.3 ; sys_platform == 'win32'
+flask-cors==3.0.8
+flask-restful==0.3.8
+flask-sqlalchemy==2.4.3
+flask==1.1.2
+itsdangerous==1.1.0
+jinja2==2.11.2
+markupsafe==1.1.1
+more-itertools==8.3.0
+packaging==20.4
+pluggy==0.13.1
+psycopg2-binary==2.9.6
+py==1.8.1
+pyparsing==2.4.7
+pytest-flask==1.0.0
+pytest==5.4.2
+python-dotenv==0.13.0
+pytz==2020.1
+six==1.15.0
+sqlalchemy==1.4.16
+wcwidth==0.2.2
+werkzeug==1.0.1
+pandas==1.5.2
+firebase_admin=6.2.0
