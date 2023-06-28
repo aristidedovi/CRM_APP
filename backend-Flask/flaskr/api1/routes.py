@@ -10,9 +10,8 @@ import csv
 import pandas as pd
 from os import environ, path
 import psycopg2
-from firebase_admin import auth
 import firebase_admin
-from firebase_admin import credentials
+from firebase_admin import credentials, auth
 from datetime import datetime
 
 
@@ -80,6 +79,15 @@ def verify_firebase_token(func):
     
     wrapper.__name__ = func.__name__
     return wrapper
+
+@api1.route('/generate_token', methods=['POST'])
+def generate_token():
+    email = request.json['email']
+    password = request.json['password']
+
+    user = auth.sign_in_with_email_and_password(email, password)
+    print(user)
+
 
 @api1.route('/upload_data', methods=['POST'])
 def post_csv_file():
