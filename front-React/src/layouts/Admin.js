@@ -26,6 +26,10 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
 
+//Now let's add the toast messages for our errors.
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 //firebase authn import
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import firebase from "./Firebase";
@@ -108,6 +112,7 @@ const Admin = (props) => {
           </Container>
         </div>
       </div> : <Auth></Auth>}
+      <ToastContainer />
     </>
   );
 };

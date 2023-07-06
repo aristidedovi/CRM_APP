@@ -68,7 +68,22 @@ import { FilterMatchMode } from 'primereact/api';
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 
+//Now let's add the toast messages for our errors.
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+import bsCustomFileInput from 'bs-custom-file-input';
+import { Dashboard } from "@mui/icons-material";
+import DashboardHeader from "components/Headers/DashboardHeader";
+
+
+const toastSucess = (message) => {
+  toast.success(message)
+} 
+
+const toastError = (error) => {
+  toast.error(error)
+} 
 
 const Index = (props) => {
 
@@ -96,6 +111,9 @@ const Index = (props) => {
   const [pages, setPages] = useState(1);
   //const [currentPage, setCurrentPage] = useState(1)
 
+  const [uploadedData, setUploadedData] = useState(true);
+
+
 
   const getProductsHistories = () => {
     return fetch(`http://localhost:5000/api/v1/product_histories?page=${currentPage}`, options)
@@ -122,7 +140,8 @@ const Index = (props) => {
 
   useEffect(() => {
     //get all products
-    getProductsData()
+    
+      getProductsData()
       .then(json => {
         //setData(json)
         setYuupee_produits(json ? json['products'] : [])
@@ -145,6 +164,8 @@ const Index = (props) => {
       .catch(error => {
         console.error(error)
       });
+
+      //setUploadedData(false)
 
   }, [currentPage]);
 
@@ -212,6 +233,8 @@ const Index = (props) => {
   const [products, setProducts] = React.useState(null);
   const [product, setProduct] = React.useState({});
   //const [product, setProduct] = React.useState(emptyProduct);
+
+  
 
 
   const [filters2, setFilters2] = useState({
@@ -375,67 +398,10 @@ const dt = useRef(null);
           );
   }
 
-  //const formatCurrency = (value) => {
-    //console.log(value)
-    //return value.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' });
-  //}
-
-  /*function product_price(prix_fournisseur) {
-    let prix_site_web = 0 ;
-
-    if(prix_fournisseur <= 5000) {
-      
-      prix_site_web = (prix_fournisseur*(50/100)) + prix_fournisseur;
-
-    }else if(prix_fournisseur > 5000 && prix_fournisseur <= 10000) {
-
-      prix_site_web = (prix_fournisseur*(40/100)) + prix_fournisseur;
-
-    } else if(prix_fournisseur > 10000 && prix_fournisseur <= 100000) {
-
-      prix_site_web = (prix_fournisseur*(20/100)) + prix_fournisseur;
-
-    }else if(prix_fournisseur > 100000 && prix_fournisseur <= 190000) {
-
-      prix_site_web = (prix_fournisseur*(20/100)) + prix_fournisseur;
-
-    }else if(prix_fournisseur > 190000 && prix_fournisseur <= 390000) {
-
-      prix_site_web = (prix_fournisseur*(15/100)) + prix_fournisseur;
-
-    }else if(prix_fournisseur > 390000) {
-
-      prix_site_web = (prix_fournisseur*(10/100)) + prix_fournisseur;
-
-    }else {
-      prix_site_web = 0;
-    }
-
-    return prix_site_web;
-}*/
   
   const priceFournisseurBodyTemplate = (rowData) => {
   return (rowData.AR_PrixVen.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }));
   }
-  
-  // const countOutOfStock = () => {
-  // let count = 0;
-  // if (yuupee_produits) {
-  //   yuupee_produits.map((x,i) => {
-  //     if (x.StockTOTAL === '-' || x.StockTOTAL >= 400) {
-  //       count++
-  //     }
-  //     return count;
-  //   })
-  // }
-  
-  // count_Out_Stock = count
-  // //console.log('Count out of stock',count_Out_Stock)
-  // };
-  
-  //const out = countOutOfStock()
-  
-  //const footer = 'Au total, il y a' + <i>wwew</i>  +`${products ? products.length : 0} produits, il y a ${yuupee_produits ? yuupee_produits.length : 0} sur le site web et il y a ${count_Out_Stock ? count_Out_Stock : 0} produits qui ne sont pas en stock`;
   
   const footer = `Tableau de produit`;
   
@@ -452,8 +418,9 @@ const dt = useRef(null);
   }
   
   const rowClass = (data) => {
+    //console.log(data)
   return {
-      'row-accessories': data.StockTOTAL === '0' || data.StockTOTAL >= 400
+      'row-accessories': data.StockTOTAL === 0
   }
   }
   
@@ -517,9 +484,88 @@ const dt = useRef(null);
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+
+  const [selectedFile, setSelectedFile] = useState(null);
+	const [isFilePicked, setIsFilePicked] = useState(false);
+
+  const inputRef = useRef(null);
+
+
+
+  //bsCustomFileInput.init()
+
+
+  	const changeHandler = (event) => {
+      //bsCustomFileInput.init()
+      //console.log(event.target.val(''))
+
+      setSelectedFile(event.target.files[0]);
+      // console.log(event.target.value)
+      // event.target.value = ""
+      // console.log(event.target.value)
+      setIsFilePicked(true);
+      //bsCustomFileInput.destroy()
+      
+	  };
+
+  const handleSubmission = () => {
+    const formData = new FormData();
+    setLoading2(true);
+
+    formData.append('uploaded-file', selectedFile);
+    //toastSucess()
+    //bsCustomFileInput.destroy()
+
+
+
+    fetch(
+      'http://localhost:5000/api/v1/upload_data',
+      {
+        method: 'POST',
+        body: formData,
+      }
+    )
+    .then((response) => {
+      return response.json()
+    })
+    .then((result) => {
+      toastSucess(result['message'])
+      //console.log('Success:', result['message']);
+      inputRef.current.value = null;
+      
+      getProductsData()
+      .then(json => {
+        //setData(json)
+        setYuupee_produits(json ? json['products'] : [])
+        setLoading2(false);
+      })
+      .catch(error => {
+        console.error(error)
+        setLoading2(false);
+      });
+      
+    })
+    .catch((error) => {
+      toastError(error['message'])
+      console.error('Error:', error['message']);
+    });
+    //setUploadedData(false)
+  };
+
+  const buttonDisabled = () => {
+    var disable_button = false;
+    if (loading2 || !isFilePicked) {
+      disable_button = true;
+    }
+    return disable_button;
+  }
+
+
+
   return (
     <>
-      <Header />
+      {/* <Header /> */}
+      <DashboardHeader/>
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
@@ -530,25 +576,51 @@ const dt = useRef(null);
             <Row className="align-items-center">
               <div className="col">
                 <h6 className="text-uppercase ls-1 mb-1">
-                  Overview
+                  Products
                 </h6>
-                <h2 className="mb-0">Sales value</h2>
+                <h2 className="mb-0">All producs</h2>
               </div>
               <div className="col">
-                    <Nav className="justify-content-end" pills>
+              <Nav className="justify-content-end" pills>
+                <NavItem>
+                  <div className="custom-file">
+                    <input ref={inputRef}  type="file" onChange={changeHandler}  />
+                  </div>
+                </NavItem>
+                <NavItem>
+                  <Button
+                    color="primary"
+                    href="#pablo"
+                    onClick={handleSubmission}
+                    size="sm"
+                    disabled={buttonDisabled()}
+                    >
+                    Submit
+                  </Button>
+                </NavItem>
+              </Nav>
+              </div>
+              {/* <div className="col"> */}
+                    {/* <Nav className="justify-content-end" pills>
                       <NavItem>
                         <NavLink
                           className={classnames("py-2 px-3", {
                             active: activeNav === 1,
                           })}
                           href="#pablo"
-                          onClick={(e) => toggleNavs(e, 1)}
+                          //onClick={(e) => toggleNavs(e, 2)}
                         >
-                          <span className="d-none d-md-block">Month</span>
-                          <span className="d-md-none">M</span>
+
+                          {/* <span className="d-none d-md-block">Upload file</span> */}
+                          {/* <span className="d-md-none">M</span> */}
+
+                          {/*<input className="d-none d-md-block" type="file" name="file" onChange={changeHandler} />
+                          <div>
+                            <button onClick={handleSubmission}>Submit</button>
+                          </div>
                         </NavLink>
-                      </NavItem>
-                      <NavItem>
+                      </NavItem> */}
+                      {/* <NavItem>
                         <NavLink
                           className={classnames("py-2 px-3", {
                             active: activeNav === 2,
@@ -560,9 +632,9 @@ const dt = useRef(null);
                           <span className="d-none d-md-block">Week</span>
                           <span className="d-md-none">W</span>
                         </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
+                      </NavItem> */}
+                    {/* </Nav> */}
+                  {/* </div> */}
             </Row>
             </CardHeader>
             <CardBody>
@@ -751,7 +823,7 @@ const dt = useRef(null);
           </Col> */}
         </Row>
         <Row className="mt-5">
-          <Col className="mb-5 mb-xl-0" xl="8">
+          <Col className="mb-5 mb-xl-0" xl="12">
             <Card className="shadow">
               <CardHeader className="border-0">
                 <Row className="align-items-center">
@@ -759,14 +831,14 @@ const dt = useRef(null);
                     <h3 className="mb-0">Product Import History</h3>
                   </div>
                   <div className="col text-right">
-                    <Button
+                    {/* <Button
                       color="primary"
                       href="#pablo"
                       onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
                       See all
-                    </Button>
+                    </Button> */}
                   </div>
                 </Row>
               </CardHeader>
@@ -838,7 +910,7 @@ const dt = useRef(null);
               </CardFooter>
             </Card>
           </Col>
-          <Col xl="4">
+          {/* <Col xl="4">
             <Card className="shadow">
               <CardHeader className="border-0">
                 <Row className="align-items-center">
@@ -945,9 +1017,10 @@ const dt = useRef(null);
                 </tbody>
               </Table>
             </Card>
-          </Col>
+          </Col> */}
         </Row>
       </Container>
+      <ToastContainer />
     </>
   );
 };
