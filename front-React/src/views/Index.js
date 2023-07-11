@@ -564,8 +564,8 @@ const dt = useRef(null);
 
   return (
     <>
-      {/* <Header /> */}
-      <DashboardHeader/>
+       <Header />
+      {/* <DashboardHeader/> */}
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>

@@ -16,6 +16,7 @@ from datetime import datetime
 
 
 
+
 import random
 
 # Define folder to save uploaded files to process further
@@ -60,15 +61,19 @@ firebase_admin.initialize_app(cred)
 
 def verify_firebase_token(func):
     def wrapper(*args, **kwargs):
+        if current_app.config['TESTING'] == True:
+            # Skip verification in the test environment
+            return func(*args, **kwargs)
+        
         id_token = request.headers.get('Authorization')
         #print(id_token)
         
-
-        if id_token is None:
+        #print(current_app.config['DEBUG'])
+        if id_token is None :
             return jsonify({'message': 'Firebase token missing'}), 401
 
         try:
-             # Remove "Bearer " prefix from the token
+            # Remove "Bearer " prefix from the token
             id_token = id_token.replace('Bearer ', '')
             decoded_token = auth.verify_id_token(id_token)
             # Perform additional validation or processing if needed
@@ -76,14 +81,22 @@ def verify_firebase_token(func):
             return func(*args, **kwargs)
         except auth.InvalidIdTokenError:
             return jsonify({'message': 'Invalid Firebase token'}), 401
-    
+
     wrapper.__name__ = func.__name__
     return wrapper
+
+def if_is_testing():
+    # Define your condition logic here
+    # Return True if the condition is met, False otherwise
+    return True
 
 @api1.route('/generate_token', methods=['POST'])
 def generate_token():
     email = request.json['email']
     password = request.json['password']
+
+    ##print(firebase_admin.__version__)
+
 
     user = auth.sign_in_with_email_and_password(email, password)
     print(user)
@@ -95,6 +108,7 @@ def post_csv_file():
     if request.method == 'POST':
         # upload file flask
         uploaded_file = request.files['uploaded-file']
+        #print(uploaded_file)
 
         uploaded_file.filename = datetime.now().isoformat()+uploaded_file.filename
         filepath = os.path.join(current_app.config['FILE_UPLOADS'], uploaded_file.filename)
@@ -105,20 +119,20 @@ def post_csv_file():
 
         product_import = ProductImport(datetime.now(), uploaded_file.filename, file_size, filepath)
         product_import.insert()
-        
+
         with open(filepath) as file:
                 csv_file = csv.reader(file)
                 for row in csv_file:
                     data.append(row)
-        
+
         #engine=create_engine("postgresql+psycopg2://postgres:postgres@localhost:5432/yuupee_db")
-        engine=create_engine(environ.get('DEV_DATABASE_URI'))
+        #engine=create_engine(environ.get('DEV_DATABASE_URI'))
+        engine = db.get_engine()
 
         df = pd.read_csv(filepath)
         try:
             df.to_sql('products', con=engine, if_exists='replace')
         except Exception as e:
-            print(e)
             abort(422)
         finally:
             engine.dispose()
@@ -148,28 +162,21 @@ def post_csv_file():
 def get_products():
     #print(request.headers.get('Authorization'))
     # Establish a connection to the PostgreSQL database
-    conn = psycopg2.connect(
-        host='localhost',
-        database='crm_dev',
-        user='aristide',
-        password='aristide'
-    )
-    # Create a cursor object to execute queries
-    cursor = conn.cursor()
 
-    # Execute a SELECT query to retrieve product data
-    cursor.execute('SELECT * FROM products')
+    engine = db.get_engine()
 
-    # Fetch all the rows returned by the query
-    rows = cursor.fetchall()
+    # Example: Creating and executing an SQL command
+    sql_command = '''
+        SELECT * FROM products;
+    '''
 
-    # Close the cursor and the database connection
-    cursor.close()
-    conn.close()
-
-    # Convert the rows into a list of dictionaries
+    with engine.connect() as connection:
+        result = connection.execute(sql_command)
+    
     products = []
-    for row in rows:
+    # Process the result set
+    for row in result:
+        # Access row values using column names or indexes
         product = {
             'id': row[0],
             'AR_Ref': row[1],
@@ -182,8 +189,6 @@ def get_products():
             # Add more attributes as needed
         }
         products.append(product)
-
-
 
     return jsonify({
         'success': True,

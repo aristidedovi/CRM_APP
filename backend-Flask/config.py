@@ -35,4 +35,4 @@ class TestConfig(DevConfig):
     """testing config"""
     TESTING = True
     SQLALCHEMY_DATABASE_URI = environ.get('TEST_DATABASE_URI')
-    FILE_UPLOADS = "./scv_file"
+    FILE_UPLOADS = "./scv_file_test"
