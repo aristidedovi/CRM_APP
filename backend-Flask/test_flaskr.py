@@ -94,6 +94,25 @@ class YuupeeProductsAPI(unittest.TestCase):
         # questions and total_questions length should be more than 0
         self.assertGreater(len(data['products']), 0)
 
+    def test_get_products_historique(self):
+        '''
+         tests getting all product import histoy with pagination
+        '''
+
+        response = self.client.get('/api/v1/product_histories')
+        data = json.loads(response.data)
+
+         # status code should be 200
+        self.assertEqual(response.status_code, 200)
+        # success should be true
+        self.assertTrue(data['success'])
+        # questions and total_questions should be present in data
+        self.assertIn('product_history', data)
+        self.assertIn('pages', data)
+        # questions and total_questions length should be more than 0
+        self.assertGreater(len(data['product_history']), 0)
+
+
 
     # def test_get_paginated_questions(self):
     #     '''

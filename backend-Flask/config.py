@@ -21,7 +21,7 @@ class ProdConfig(Config):
     DEBUG = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = environ.get('PROD_DATABASE_URI')
-    FILE_UPLOADS = "./scv_file"
+    FILE_UPLOADS = "./scv_file_prod"
 
 class DevConfig(Config):
     """development config"""

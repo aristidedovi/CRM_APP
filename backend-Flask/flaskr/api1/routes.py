@@ -196,7 +196,7 @@ def get_products():
     })
 
 
-@api1.route('/product_histories')
+@api1.route('/product_histories', methods=['GET'])
 @verify_firebase_token
 def get_product_histories():
 
