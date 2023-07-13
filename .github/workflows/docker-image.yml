@@ -41,7 +41,7 @@ jobs:
       run: cd front-React && npm install
       
     - name: Build React Application
-      run: cd front-React && npm start
+      run: cd front-React && npm run build
     
     - name: Set up Python
       uses: actions/setup-python@v2
