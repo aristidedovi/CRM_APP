@@ -17,7 +17,7 @@ COPY . .
 EXPOSE 5000
 
 # Set the environment variable for Flask
-ENV FLASK_APP=app.py
+ENV FLASK_CONFIG='production'
 
 # Run the Flask app when the container starts
 CMD ["flask", "run", "--host=0.0.0.0"]

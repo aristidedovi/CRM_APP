@@ -1,11 +1,11 @@
 version: '3'
 services:
-  frontend:
-    build:
-      context: ./front-React
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
+  # frontend:
+  #   build:
+  #     context: ./front-React
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 3000:3000
 
 
   backend:
@@ -17,12 +17,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=crm_prod
-      - DB_USER=aristide
-      - DB_PASSWORD=aristide
-
+      - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
 
   db:
     image: postgres:13
