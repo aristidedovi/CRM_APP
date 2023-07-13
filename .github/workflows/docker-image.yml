@@ -15,7 +15,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: crm        
+          POSTGRES_DB: crm_test
           POSTGRES_PASSWORD: aristide
           POSTGRES_USER: aristide
         ports:
