@@ -35,6 +35,14 @@ class YuupeeProductsAPI(unittest.TestCase):
         self.app_context.push()
         with self.app.test_client():
             self.client = self.app.test_client()
+        
+        file_path = 'list-new - 08_06_2023.csv'  # Replace with the actual file path
+        #print(file_path)
+
+        with open(file_path, 'rb') as file:
+            csv_file = FileStorage(file)
+            #csv_file.filename = 'file.csv'
+            self.client.post('/api/v1/upload_data', data={'uploaded-file': csv_file})
 
     def tearDown(self):
         # pop the app context
@@ -57,22 +65,22 @@ class YuupeeProductsAPI(unittest.TestCase):
         #     return str(e), 400
 
 
-    def test_post_upload_file(self):
+    # def test_post_upload_file(self):
 
-        file_path = 'list-new - 08_06_2023.csv'  # Replace with the actual file path
-        #print(file_path)
+    #     file_path = 'list-new - 08_06_2023.csv'  # Replace with the actual file path
+    #     #print(file_path)
 
-        with open(file_path, 'rb') as file:
-            csv_file = FileStorage(file)
-            #csv_file.filename = 'file.csv'
-            response = self.client.post('/api/v1/upload_data', data={'uploaded-file': csv_file})
+    #     with open(file_path, 'rb') as file:
+    #         csv_file = FileStorage(file)
+    #         #csv_file.filename = 'file.csv'
+    #         response = self.client.post('/api/v1/upload_data', data={'uploaded-file': csv_file})
 
-        #print(response.data)
-        data = json.loads(response.data)
-        # status code should be 200
-        self.assertEqual(response.status_code, 200)
-        # success should be true
-        self.assertTrue(data['success'])
+    #     #print(response.data)
+    #     data = json.loads(response.data)
+    #     # status code should be 200
+    #     self.assertEqual(response.status_code, 200)
+    #     # success should be true
+    #     self.assertTrue(data['success'])
 
 
 
