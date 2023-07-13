@@ -38,12 +38,10 @@ jobs:
           node-version: 14
 
     - name: Install Node.js Dependencies
-      run: cd front-React
-           npm install
+      run: cd front-React && npm install
       
     - name: Build React Application
-      run: cd front-React 
-           npm start
+      run: cd front-React && npm start
     
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -51,9 +49,7 @@ jobs:
           python-version: 3.x
 
     - name: Install Python Dependencies
-      run: cd backend-Flask
-           pip install -r requirements.txt
+      run: cd backend-Flask && pip install -r requirements.txt
       
     - name: Run Flask Unit Tests
-      run: cd backend-Flask
-           pytest
+      run: cd backend-Flask && pytest
