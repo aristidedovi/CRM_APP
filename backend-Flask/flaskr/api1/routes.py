@@ -98,8 +98,8 @@ def generate_token():
     ##print(firebase_admin.__version__)
 
 
-    user = auth.sign_in_with_email_and_password(email, password)
-    print(user)
+    # user = auth.sign_in_with_email_and_password(email, password)
+    # print(user)
 
 
 @api1.route('/upload_data', methods=['POST'])
