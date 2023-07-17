@@ -53,3 +53,7 @@ jobs:
       
     - name: Run Flask Unit Tests
       run: cd backend-Flask && python3 test_flaskr.py
+    
+    - name : Build the stack
+      run : docker-compose up -d
+      
