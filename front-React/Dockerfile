@@ -8,7 +8,7 @@ WORKDIR /frontend-app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install --only=production
+RUN npm install
 
 # Copy the entire content of the React app to the container
 COPY . .

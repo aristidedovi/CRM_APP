@@ -19,7 +19,7 @@
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -36,10 +36,10 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Traffic
+                          Total Products
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          350,897
+                          {props.totalProduct}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -49,10 +49,10 @@ const Header = () => {
                       </Col>
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fa fa-arrow-up" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
+                      {/* <span className="text-success mr-2">
+                        <i className="fa fa-arrow-up" /> {props.last_date_import}
+                      </span>{" "} */}
+                      <span className="text-nowrap">{props.last_date_import}</span>
                     </p>
                   </CardBody>
                 </Card>

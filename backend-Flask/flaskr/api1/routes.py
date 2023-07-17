@@ -13,6 +13,8 @@ import psycopg2
 import firebase_admin
 from firebase_admin import credentials, auth
 from datetime import datetime
+from sqlalchemy import desc
+
 
 
 
@@ -170,6 +172,9 @@ def get_products():
         SELECT * FROM products;
     '''
 
+    product_histories = ProductImport.query.order_by(desc(ProductImport.id)).first()
+    print(product_histories.date_import)
+
     with engine.connect() as connection:
         result = connection.execute(sql_command)
     
@@ -192,7 +197,9 @@ def get_products():
 
     return jsonify({
         'success': True,
-        'products': products
+        'products': products,
+        'products_size': len(products),
+        'last_date_import': product_histories.date_import.strftime("%m/%d/%Y, %H:%M:%S")
     })
 
 
@@ -204,7 +211,7 @@ def get_product_histories():
     page = request.args.get('page', 1, type=int)
 
     '''get all categories'''
-    product_histories = ProductImport.query.order_by(ProductImport.id).paginate(
+    product_histories = ProductImport.query.order_by(desc(ProductImport.id)).paginate(
         page, current_app.config['QUESTIONS_PER_PAGE'], True)
     #product_history_dict = {prodcut_history.id: prodcut_history.file_name for prodcut_history in product_histories}
     product_history_dict  = [product_history.format() for product_history in product_histories.items]

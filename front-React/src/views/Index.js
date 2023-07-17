@@ -113,6 +113,9 @@ const Index = (props) => {
 
   const [uploadedData, setUploadedData] = useState(true);
 
+  const [yuupee_produits_length, setYuupee_produits_length] = useState()
+  const [last_date_import, setLast_date_import] = useState()
+
 
 
   const getProductsHistories = () => {
@@ -145,6 +148,8 @@ const Index = (props) => {
       .then(json => {
         //setData(json)
         setYuupee_produits(json ? json['products'] : [])
+        setYuupee_produits_length(json ? json['products_size'] : [])
+        setLast_date_import(json ? json['last_date_import'] : [])
         setLoading2(false);
       })
       .catch(error => {
@@ -167,7 +172,7 @@ const Index = (props) => {
 
       //setUploadedData(false)
 
-  }, [currentPage]);
+  }, [currentPage, last_date_import]);
 
   const get_pagination =  pages => {
     let content = []
@@ -537,11 +542,27 @@ const dt = useRef(null);
       .then(json => {
         //setData(json)
         setYuupee_produits(json ? json['products'] : [])
+        setYuupee_produits_length(json ? json['products_size'] : [])
+        setLast_date_import(json ? json['last_date_import'] : [])
         setLoading2(false);
       })
       .catch(error => {
         console.error(error)
         setLoading2(false);
+      });
+
+
+      //get product import histories
+      getProductsHistories()
+      .then(json => {
+        setProductHistories(json ? json['product_history'] : [])
+        setHasNextPage(json ? json['has_next'] :  []);
+        setPages(json ? json['pages'] :  []);
+        setCurrentPage(json ? json['current_page']: [])
+        //console.log(json['product_history'])
+      })
+      .catch(error => {
+        console.error(error)
       });
       
     })
@@ -564,7 +585,7 @@ const dt = useRef(null);
 
   return (
     <>
-       <Header />
+       <Header last_date_import={last_date_import} totalProduct={yuupee_produits_length} />
       {/* <DashboardHeader/> */}
       {/* Page content */}
       <Container className="mt--7" fluid>
