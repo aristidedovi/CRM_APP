@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Set up an HTTP server to serve the built React app
-RUN npm install -g serve
+#RUN npm install -g serve
 
 # Expose the port on which the server will run (default is 5000)
 EXPOSE 3000
