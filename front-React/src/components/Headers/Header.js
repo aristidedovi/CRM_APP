@@ -52,7 +52,7 @@ const Header = (props) => {
                       {/* <span className="text-success mr-2">
                         <i className="fa fa-arrow-up" /> {props.last_date_import}
                       </span>{" "} */}
-                      <span className="text-nowrap">{props.last_date_import}</span>
+                      <span className="text-nowrap">Uploaded at, {props.last_date_import}</span>
                     </p>
                   </CardBody>
                 </Card>

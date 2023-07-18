@@ -17,7 +17,7 @@
 */
 /*eslint-disable*/
 import { useState } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import { NavLink as NavLinkRRD, Link, useNavigate } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
@@ -52,11 +52,18 @@ import {
   Col,
 } from "reactstrap";
 
+//Now let's add the toast messages for our errors.
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 var ps;
 
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
   // verifies if routeName is the one active (in browser input)
+
+  const navigate = useNavigate();
+
   const activeRoute = (routeName) => {
     return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
@@ -71,18 +78,21 @@ const Sidebar = (props) => {
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
-      return (
-        <NavItem key={key}>
-          <NavLink
-            to={prop.layout + prop.path}
-            tag={NavLinkRRD}
-            onClick={closeCollapse}
-          >
-            <i className={prop.icon} />
-            {prop.name}
-          </NavLink>
-        </NavItem>
-      );
+      if (prop.path != '/login' && prop.path != '/register') {
+        return (
+          <NavItem key={key}>
+            <NavLink
+              to={prop.layout + prop.path}
+              tag={NavLinkRRD}
+              onClick={closeCollapse}
+            >
+              <i className={prop.icon} />
+              {prop.name}
+            </NavLink>
+          </NavItem>
+        );
+      }
+      
     });
   };
 
@@ -230,18 +240,25 @@ const Sidebar = (props) => {
           {/* Navigation */}
           <Nav navbar>{createLinks(routes)}</Nav>
           {/* Divider */}
-          {/* <hr className="my-3" />
+          <hr className="my-3" />
           {/* Heading */}
-          {/*<h6 className="navbar-heading text-muted">Documentation</h6> */}
+          {/* <h6 className="navbar-heading text-muted">Documentation</h6> */}
           {/* Navigation */}
-          {/* <Nav className="mb-md-3" navbar>
+          <Nav className="mb-md-3" navbar>
             <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
-                <i className="ni ni-spaceship" />
-                Getting started
+              <NavLink href="#" onClick={() => {
+                  sessionStorage.clear()
+                  toast.info('Logout Success')
+                  setTimeout(() => {
+                    navigate('/auth/login')
+                  }, "1000");
+                  //navigate('/auth/login')
+                  }}>
+                <i className="ni ni-user-run" />
+                  Log out
               </NavLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-sidebar">
                 <i className="ni ni-palette" />
                 Foundation
@@ -252,16 +269,16 @@ const Sidebar = (props) => {
                 <i className="ni ni-ui-04" />
                 Components
               </NavLink>
-            </NavItem>
-          </Nav> */}
-          {/* <Nav className="mb-md-3" navbar>
+            </NavItem> */}
+          </Nav>
+          <Nav className="mb-md-3" navbar>
             <NavItem className="active-pro active">
-              <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adr-admin-sidebar">
+              <NavLink href="#">
                 <i className="ni ni-spaceship" />
                 Upgrade to PRO
               </NavLink>
             </NavItem>
-          </Nav> */}
+          </Nav>
         </Collapse>
       </Container>
     </Navbar>
