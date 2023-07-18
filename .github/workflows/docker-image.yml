@@ -54,3 +54,8 @@ jobs:
     - name: Run Flask Unit Tests
       run: cd backend-Flask && python3 test_flaskr.py
 
+
+    - name: Build with docker-compose
+        uses: actions/checkout@v3
+        run: docker-compose up -d 
+
