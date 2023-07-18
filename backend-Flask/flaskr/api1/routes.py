@@ -51,13 +51,22 @@ def product_yuupee_price(price):
 @api1.after_request
 def after_request(response):
     '''defining extra headers'''
-    response.headers.add('Access-Control-Allow-Headers',
-                         'Content-Type,Authorization,true')
-    response.headers.add('Access-Control-Allow-Methods',
-                         'GET,PATCH,POST,DELETE,OPTIONS')
-    response.headers.add('Content-Type', 'application/json')
-    response.header.add('Access-Control-Allow-Private-Network', 'true')
-    response.header.add('Access-Control-Allow-Origin', '*')
+    # response.headers.add('Access-Control-Allow-Headers',
+    #                      'Content-Type,Authorization,true')
+    # response.headers.add('Access-Control-Allow-Methods',
+    #                      'GET,PATCH,POST,DELETE,OPTIONS')
+    # response.headers.add('Content-Type',
+    #                      'application/json')
+    # response.header.add('Access-Control-Allow-Private-Network',
+    #                     'true')
+    # response.header.add('Access-Control-Allow-Origin',
+    #                     '*')
+    
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Requested-With, Authorization,true"
+    response.headers['Content-Type'] = 'application/json'
+
     return response
 
 cred = credentials.Certificate("serviceAccountKey.json")
