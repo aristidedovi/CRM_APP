@@ -56,6 +56,8 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods',
                          'GET,PATCH,POST,DELETE,OPTIONS')
     response.headers.add('Content-Type', 'application/json')
+    response.header.add('Access-Control-Allow-Private-Network', 'true')
+    response.header.add('Access-Control-Allow-Origin', '*')
     return response
 
 cred = credentials.Certificate("serviceAccountKey.json")
