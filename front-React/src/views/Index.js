@@ -75,6 +75,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import bsCustomFileInput from 'bs-custom-file-input';
 import { Dashboard } from "@mui/icons-material";
 import DashboardHeader from "components/Headers/DashboardHeader";
+import { apiService } from "services/apiService";
 
 
 const toastSucess = (message) => {
@@ -101,10 +102,10 @@ const Index = (props) => {
   }
 
 
-  const getProductsData = () => {
-    return fetch('http://localhost:5000/api/v1/products', options)
-    .then(response => response.json());
-  }
+  // const getProductsData = () => {
+  //   return fetch('http://localhost:5000/api/v1/products', options)
+  //   .then(response => response.json());
+  // }
   
   const [currentPage, setCurrentPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
@@ -118,17 +119,17 @@ const Index = (props) => {
 
 
 
-  const getProductsHistories = () => {
-    return fetch(`http://localhost:5000/api/v1/product_histories?page=${currentPage}`, options)
-    .then(response => {
-      if (response.status === 401) {
-        navigate('/auth/login')
-        sessionStorage.clear()
-      } else {
-        return response.json()
-      }
-    });
-  }
+  // const getProductsHistories = () => {
+  //   return fetch(`http://localhost:5000/api/v1/product_histories?page=${currentPage}`, options)
+  //   .then(response => {
+  //     if (response.status === 401) {
+  //       navigate('/auth/login')
+  //       sessionStorage.clear()
+  //     } else {
+  //       return response.json()
+  //     }
+  //   });
+  // }
 
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
@@ -144,7 +145,7 @@ const Index = (props) => {
   useEffect(() => {
     //get all products
     
-      getProductsData()
+    apiService.get('products')
       .then(json => {
         //setData(json)
         setYuupee_produits(json ? json['products'] : [])
@@ -158,7 +159,7 @@ const Index = (props) => {
       });
 
       //get product import histories
-      getProductsHistories()
+      apiService.get(`product_histories?page=${currentPage}`)
       .then(json => {
         setProductHistories(json ? json['product_history'] : [])
         setHasNextPage(json ? json['has_next'] :  []);
@@ -522,23 +523,25 @@ const dt = useRef(null);
     //bsCustomFileInput.destroy()
 
 
+    
 
-    fetch(
-      'http://localhost:5000/api/v1/upload_data',
-      {
-        method: 'POST',
-        body: formData,
-      }
-    )
-    .then((response) => {
-      return response.json()
-    })
+    // fetch(
+    //   'http://localhost:5000/api/v1/upload_data',
+    //   {
+    //     method: 'POST',
+    //     body: formData,
+    //   }
+    // )
+    // .then((response) => {
+    //   return response.json()
+    // })
+    apiService.post('upload_data', formData)
     .then((result) => {
       toastSucess(result['message'])
       //console.log('Success:', result['message']);
       inputRef.current.value = null;
       
-      getProductsData()
+      apiService.get('products')
       .then(json => {
         //setData(json)
         setYuupee_produits(json ? json['products'] : [])
@@ -553,7 +556,7 @@ const dt = useRef(null);
 
 
       //get product import histories
-      getProductsHistories()
+      apiService.get(`product_histories?page=${currentPage}`)
       .then(json => {
         setProductHistories(json ? json['product_history'] : [])
         setHasNextPage(json ? json['has_next'] :  []);
