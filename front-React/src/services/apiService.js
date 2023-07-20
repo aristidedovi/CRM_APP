@@ -1,5 +1,5 @@
  // Remplacez par l'URL de base de votre API
- var apiUrl = 'http://localhost:5000/api/v1';
+ const apiUrl = 'http://localhost:5000/api/v1';
 
 
 var options = {
