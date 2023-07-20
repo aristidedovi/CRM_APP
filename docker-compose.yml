@@ -34,6 +34,8 @@ services:
       - POSTGRES_DB=crm_prod
       - POSTGRES_USER=aristide
       - POSTGRES_PASSWORD=aristide
+    networks:
+      - crm_networks
 
 networks:
   crm_networks:
