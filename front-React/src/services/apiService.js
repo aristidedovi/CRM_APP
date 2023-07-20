@@ -5,7 +5,8 @@
 var options = {
     headers: {
       'Authorization': `Bearer ${sessionStorage.getItem('Auth Token')}`,
-    }
+    },
+    mode: 'no-cors',
   }
 
   // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -35,6 +36,7 @@ export const apiService = {
         {
             method: 'POST',
             body: formData,
+            mode: 'no-cors',
         }
       )
       .then(response => {
