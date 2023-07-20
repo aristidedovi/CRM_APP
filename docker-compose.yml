@@ -9,7 +9,7 @@ services:
     depends_on:
       - backend
     environment:
-      - - BACKEND_URL=http://backend
+      - BACKEND_URL=http://backend
 
 
   backend:
