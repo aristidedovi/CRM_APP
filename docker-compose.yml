@@ -8,6 +8,8 @@ services:
       - 3000:3000
     depends_on:
       - backend
+    networks:
+      - crm_networks
     environment:
       - BACKEND_URL=http://backend
 
@@ -20,6 +22,8 @@ services:
       - 5000:5000
     depends_on:
       - db
+    networks:
+      - crm_networks
     environment:
       - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
 
@@ -30,3 +34,6 @@ services:
       - POSTGRES_DB=crm_prod
       - POSTGRES_USER=aristide
       - POSTGRES_PASSWORD=aristide
+
+  networks:
+    crm_networks:
