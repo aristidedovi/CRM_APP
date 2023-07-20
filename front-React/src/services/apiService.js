@@ -1,5 +1,5 @@
  // Remplacez par l'URL de base de votre API
- var apiUrl = 'http://localhost:5000/api/v1';
+ var apiUrl = 'http://127.0.0.1:5000/api/v1';
 
 
 var options = {
@@ -8,13 +8,13 @@ var options = {
     }
   }
 
-  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        // dev code
-        apiUrl = 'http://localhost:5000/api/v1';
-    } else {
-        // dev code
-        apiUrl = `${process.env.BACKEND_URL}:5000/api/v1`;
-    }
+  // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  //       // dev code
+  //       apiUrl = 'http://localhost:5000/api/v1';
+  //   } else {
+  //       // dev code
+  //       apiUrl = `${process.env.BACKEND_URL}:5000/api/v1`;
+  //   }
 
 export const apiService = {
   get: (endpoint) => {
