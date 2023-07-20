@@ -5,17 +5,16 @@
 var options = {
     headers: {
       'Authorization': `Bearer ${sessionStorage.getItem('Auth Token')}`,
-    },
-    mode: 'no-cors',
+    }
   }
 
-  // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  //       // dev code
-  //       apiUrl = 'http://localhost:5000/api/v1';
-  //   } else {
-  //       // dev code
-  //       apiUrl = 'http://localhost:5000/api/v1';
-  //   }
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        // dev code
+        apiUrl = 'http://localhost:5000/api/v1';
+    } else {
+        // dev code
+        apiUrl = `${process.env.BACKEND_URL}:5000/api/v1`;
+    }
 
 export const apiService = {
   get: (endpoint) => {
@@ -36,7 +35,6 @@ export const apiService = {
         {
             method: 'POST',
             body: formData,
-            mode: 'no-cors',
         }
       )
       .then(response => {
