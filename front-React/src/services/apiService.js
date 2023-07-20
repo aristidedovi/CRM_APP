@@ -12,7 +12,7 @@ var apiUrl = '';
         apiUrl = 'http://localhost:5000/api/v1';
     } else {
         // dev code
-        apiUrl = 'http://backend:5000/api/v1';
+        apiUrl = 'http://localhost:5000/api/v1';
     }
 
 export const apiService = {

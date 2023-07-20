@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 3000:3000
+    networks:
+      - crm_networks
 
 
   backend:
@@ -18,6 +20,8 @@ services:
       - db
     environment:
       - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
+    networks:
+      - crm_networks
 
   db:
     image: postgres:13
@@ -25,3 +29,9 @@ services:
       - POSTGRES_DB=crm_prod
       - POSTGRES_USER=aristide
       - POSTGRES_PASSWORD=aristide
+    networks:
+      - crm_networks
+
+networks:
+  crm_networks:
+    driver: bridge
