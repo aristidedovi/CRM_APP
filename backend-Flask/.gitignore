@@ -16,7 +16,7 @@ build/
 .idea/
 docs/_build/
 .vscode
-.env
+#.env
 
 # Coverage reports
 htmlcov/
