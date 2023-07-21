@@ -19,6 +19,7 @@ services:
       - db
     environment:
       - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
+      - FLASK_CONFIG=production
 
 
   db:
