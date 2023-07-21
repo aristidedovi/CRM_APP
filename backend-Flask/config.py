@@ -29,7 +29,7 @@ class DevConfig(Config):
     ENV = 'development'
     DEBUG = True
     #SQLALCHEMY_DATABASE_URI = environ.get('DEV_DATABASE_URI')
-    SQLALCHEMY_DATABASE_URI = environ.get('DEV_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI')
     FILE_UPLOADS = "./scv_file"
 
 class TestConfig(DevConfig):

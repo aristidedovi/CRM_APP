@@ -2,7 +2,7 @@
  const apiUrl = 'http://localhost:5000/api/v1';
 
 
-var options = {
+const options = {
     headers: {
       'Authorization': `Bearer ${sessionStorage.getItem('Auth Token')}`,
     }
@@ -18,7 +18,7 @@ var options = {
 
 export const apiService = {
   get: (endpoint) => {
-    return fetch(`${apiUrl}/${endpoint}`, options)
+    return fetch(apiUrl+'/'+endpoint, options)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -31,7 +31,7 @@ export const apiService = {
       });
   },
   post: (endpoint, formData) => {
-    return fetch(`${apiUrl}/${endpoint}`,
+    return fetch(apiUrl+'/'+endpoint,
         {
             method: 'POST',
             body: formData,

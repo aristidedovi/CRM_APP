@@ -18,7 +18,7 @@ def create_app(config=None):
     else:
         raise EnvironmentError(
             'Please specify a valid configuration profile for the application. Possible choices are `development`, `testing`, or `production`')
-    print(app.config)
+    #print(app.config)
     # initializing application extentions
     db.init_app(app)
     # bind all extentions to the app instance

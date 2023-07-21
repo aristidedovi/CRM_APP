@@ -8,8 +8,8 @@ services:
       - 3000:3000
     depends_on:
       - backend
-    environment:
-      - BACKEND_URL=http://backend:5000
+    networks:
+      - crm_app-network
 
   backend:
     build:
@@ -22,6 +22,8 @@ services:
     environment:
       - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
       - FLASK_CONFIG=production
+    networks:
+      - crm_app-network
 
 
   db:
@@ -32,5 +34,11 @@ services:
       - POSTGRES_DB=crm_prod
       - POSTGRES_USER=aristide
       - POSTGRES_PASSWORD=aristide
+    networks:
+      - crm_app-network
+
 volumes:
   crm_prod_db:
+
+networks:
+  crm_app-network:
