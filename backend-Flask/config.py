@@ -1,5 +1,6 @@
 """Flask configuration file"""
 from os import environ, path
+import os
 from dotenv import load_dotenv
 basedir = path.abspath(path.dirname(__file__))
 # load environment variables file
@@ -20,7 +21,7 @@ class ProdConfig(Config):
     ENV = 'production'
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = environ.get('PROD_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('PROD_DATABASE_URI')
     FILE_UPLOADS = "./scv_file_prod"
 
 class DevConfig(Config):

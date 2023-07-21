@@ -23,6 +23,8 @@ services:
 
   db:
     image: postgres:13
+    volumes:
+       - crm_prod_db:/data/crm_prod_db
     environment:
       - POSTGRES_DB=crm_prod
       - POSTGRES_USER=aristide
