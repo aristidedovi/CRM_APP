@@ -10,6 +10,8 @@ services:
       - backend
     networks:
       - crm_app-network
+    environment:
+      - BACKEND_URL=http://backend:5000/api/v1
 
   backend:
     build:
