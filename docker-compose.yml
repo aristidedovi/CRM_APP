@@ -13,34 +13,34 @@ services:
     environment:
       - REACT_APP_API=http://backend:5000/api/v1
 
-  # backend:
-  #   build:
-  #     context: ./backend-Flask
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 5000:5000
-  #   depends_on:
-  #     - db
-  #   environment:
-  #     - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
-  #     - FLASK_CONFIG=production
-  #   networks:
-  #     - crm_app-network
+  backend:
+    build:
+      context: ./backend-Flask
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    environment:
+      - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
+      - FLASK_CONFIG=production
+    networks:
+      - crm_app-network
 
 
-  # db:
-  #   image: postgres:13
-  #   volumes:
-  #      - crm_prod_db:/data/crm_prod_db
-  #   environment:
-  #     - POSTGRES_DB=crm_prod
-  #     - POSTGRES_USER=aristide
-  #     - POSTGRES_PASSWORD=aristide
-  #   networks:
-  #     - crm_app-network
+  db:
+    image: postgres:13
+    volumes:
+       - crm_prod_db:/data/crm_prod_db
+    environment:
+      - POSTGRES_DB=crm_prod
+      - POSTGRES_USER=aristide
+      - POSTGRES_PASSWORD=aristide
+    networks:
+      - crm_app-network
 
-# volumes:
-#   crm_prod_db:
+volumes:
+  crm_prod_db:
 
 networks:
   crm_app-network:
