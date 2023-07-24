@@ -18,7 +18,7 @@ const options = {
 
 export const apiService = {
   get: (endpoint) => {
-    console.log(process.env.BACKEND_URL);
+    console.log(process.env.REACT_APP_API);
     return fetch(apiUrl+'/'+endpoint, options)
       .then(response => {
         if (!response.ok) {
