@@ -18,8 +18,42 @@
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import React, { useState,useEffect, useRef } from "react";
+import { apiService } from "services/apiService";
 
+//last_date_import={last_date_import} totalProduct={yuupee_produits_length}
 const Header = (props) => {
+
+  const [yuupee_product_length ,setYuupee_produits_length] = useState()
+  const [last_date_import ,setLast_date_import] = useState()
+  const [update_products_list_length ,setUpdate_products_list_length] = useState()
+  const [last_date_import_update_product ,setLast_date_import_update_product] = useState()
+
+  
+  
+
+  useEffect(() => {
+    //get all products
+    apiService.get('products')
+      .then(json => {
+        //setData(json)
+        setYuupee_produits_length(json ? json['products_size'] : [])
+        setLast_date_import(json ? json['last_date_import'] : [])
+
+      })
+      .catch(error => {
+        console.error(error)
+      });
+      //setUploadedData(false)
+
+      apiService.get_update_products('product_update_list')
+      .then(json => {
+        setUpdate_products_list_length(json ? json['products_size'] : [])
+        setLast_date_import_update_product(json ? json['last_date_import'] : [])
+      })
+
+  }, []);
+
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -39,7 +73,7 @@ const Header = (props) => {
                           Total Products
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {props.totalProduct}
+                          {yuupee_product_length}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -52,7 +86,7 @@ const Header = (props) => {
                       {/* <span className="text-success mr-2">
                         <i className="fa fa-arrow-up" /> {props.last_date_import}
                       </span>{" "} */}
-                      <span className="text-nowrap">Uploaded at, {props.last_date_import}</span>
+                      <span className="text-nowrap">Uploaded at, {last_date_import}</span>
                     </p>
                   </CardBody>
                 </Card>
@@ -66,9 +100,9 @@ const Header = (props) => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          New users
+                          Total Update product
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">2,356</span>
+                        <span className="h2 font-weight-bold mb-0">{update_products_list_length}</span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -77,10 +111,10 @@ const Header = (props) => {
                       </Col>
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-danger mr-2">
+                      {/* <span className="text-danger mr-2">
                         <i className="fas fa-arrow-down" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last week</span>
+                      </span>{" "} */}
+                      <span className="text-nowrap">Uploaded at, {last_date_import_update_product}</span>
                     </p>
                   </CardBody>
                 </Card>

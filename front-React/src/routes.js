@@ -22,6 +22,7 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
+import AllProducts from "views/products/AllProducts";
 
 const routes = [
   {
@@ -32,10 +33,10 @@ const routes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "Icons",
+    path: "/products",
+    name: "Products",
     icon: "ni ni-planet text-blue",
-    component: <Icons />,
+    component: <AllProducts />,
     layout: "/admin",
   },
   {

@@ -131,6 +131,61 @@ def post_csv_file():
         uploaded_file.save(filepath)
         file_size = os.stat(filepath).st_size
 
+        #get old file
+        old_file = ProductImport.query.order_by(desc(ProductImport.id)).first()
+
+        # Ouvrir le premier fichier CSV et le lire dans un dictionnaire
+        with open(old_file.file_url, 'r') as file1:
+            csv_reader1 = csv.DictReader(file1)
+            produits1 = {}
+            for row in csv_reader1:
+                produits1[row['AR_Design']] = row['AR_PrixVen']
+
+        # Ouvrir le deuxième fichier CSV et le lire dans un dictionnaire
+        with open(filepath, 'r') as file2:
+            csv_reader2 = csv.DictReader(file2)
+            produits2 = {}
+            for row in csv_reader2:
+                produits2[row['AR_Design']] = row['AR_PrixVen']
+
+        # Parcourir les produits des deux fichiers et comparer les prix
+        for nom_produit in produits1.keys():
+            if nom_produit in produits2:
+                if produits1[nom_produit] != produits2[nom_produit]:
+                    print(f"Le prix du produit {nom_produit} a été mis à jour : {produits1[nom_produit]} -> {produits2[nom_produit]}")
+            else:
+                print(f"Le produit {nom_produit} a été supprimé du fichier 2.")
+
+        for nom_produit in produits2.keys():
+            if nom_produit not in produits1:
+                print(f"Le produit {nom_produit} a été ajouté dans le fichier 2 avec le prix {produits2[nom_produit]}.")
+
+
+        # Comparer les deux dictionnaires et stocker les différences dans une liste
+        differences = []
+        for nom_produit in produits1.keys():
+            if nom_produit in produits2:
+                if produits1[nom_produit] != produits2[nom_produit]:
+                    difference = {"nom_produit": nom_produit, "ancien_prix": produits1[nom_produit], "nouveau_prix": produits2[nom_produit]}
+                    differences.append(difference)
+            else:
+                difference = {"nom_produit": nom_produit, "ancien_prix": produits1[nom_produit], "nouveau_prix": None}
+                differences.append(difference)
+
+        for nom_produit in produits2.keys():
+            if nom_produit not in produits1:
+                difference = {"nom_produit": nom_produit, "ancien_prix": None, "nouveau_prix": produits2[nom_produit]}
+                differences.append(difference)
+
+        # Écrire les différences dans un nouveau fichier CSV
+        with open(os.path.join(current_app.config['FILE_UPLOADS'])+'/differences.csv', 'w', newline='') as csvfile:
+            fieldnames = ['nom_produit','ancien_prix', 'nouveau_prix']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for difference in differences:
+                writer.writerow(difference)
+
+
 
         product_import = ProductImport(datetime.now(), uploaded_file.filename, file_size, filepath)
         product_import.insert()
@@ -145,12 +200,17 @@ def post_csv_file():
         engine = db.get_engine()
 
         df = pd.read_csv(filepath)
+        df2 = pd.read_csv(os.path.join(current_app.config['FILE_UPLOADS'])+'/differences.csv')
         try:
             df.to_sql('products', con=engine, if_exists='replace')
+            df2.to_sql('update_list', con=engine, if_exists='replace')
+
         except Exception as e:
             abort(422)
         finally:
             engine.dispose()
+
+
 
         #print(data)
         return jsonify({
@@ -186,7 +246,7 @@ def get_products():
     '''
 
     product_histories = ProductImport.query.order_by(desc(ProductImport.id)).first()
-    print(product_histories.date_import)
+    #print(product_histories.date_import)
 
     with engine.connect() as connection:
         result = connection.execute(sql_command)
@@ -237,6 +297,53 @@ def get_product_histories():
         'pages' : product_histories.pages,
         'current_page': product_histories.page,
     })
+
+@api1.route('/product_update_list', methods=['GET'])
+@verify_firebase_token
+def get_product_update_list():
+
+    engine = db.get_engine()
+
+    # Example: Creating and executing an SQL command
+    sql_command = '''
+        SELECT * FROM update_list;
+    '''
+
+    with engine.connect() as connection:
+        result = connection.execute(sql_command)
+    
+    product_histories = ProductImport.query.order_by(desc(ProductImport.id)).first()
+
+    #print(result)
+    products = []
+    for row in result:
+        # Access row values using column names or indexes
+        product = {
+            'id': row[0],
+            'nom_produit': row[1],
+            'ancien_prix': row[2],
+            'nouveau_prix': row[3],
+            # 'Colonne1': row[4],
+            # 'AR_PrixVen': row[5],
+            # 'YU_PRIX': product_yuupee_price(row[5]),
+            # 'StockTOTAL': row[6],
+            # Add more attributes as needed
+        }
+        products.append(product)
+
+    return jsonify({
+            'success': True,
+            'products': products,
+            'products_size': len(products),
+            'last_date_import': product_histories.date_import.strftime("%m/%d/%Y, %H:%M:%S")
+
+        })
+
+   
+
+
+   
+
 
 # @api1.route('/categories')
 # def get_categories():
