@@ -30,8 +30,10 @@ services:
 
   db:
     image: postgres:13
+    restart: always
     volumes:
-       - crm_prod_db:/data/crm_prod_db
+      - ./crm_prod_db:/data/crm_prod_db
+      - ./crm_prod.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_DB=crm_prod
       - POSTGRES_USER=aristide
@@ -44,3 +46,4 @@ volumes:
 
 networks:
   crm_app-network:
+    driver: bridge
