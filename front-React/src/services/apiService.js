@@ -4,8 +4,8 @@ import { Navigate } from "react-router-dom";
  
  
  // Remplacez par l'URL de base de votre API
- //const apiUrl = 'http://144.126.232.79:5000/api/v1';
- const apiUrl = 'http://localhost:5000/api/v1';
+ const apiUrl = 'http://144.126.232.79:5000/api/v1';
+ //const apiUrl = 'http://localhost:5000/api/v1';
 
 
 const options = {
@@ -33,7 +33,7 @@ export const apiService = {
       .then(response => {
         if (!response.ok) {
           //<Navigate to="/auth/login" replace={true} />
-          //sessionStorage.clear()
+          sessionStorage.clear()
 
           throw new Error('Network response was not ok');
         }
@@ -54,7 +54,7 @@ export const apiService = {
       .then(response => {
         if (!response.ok) {
           //<Navigate to="/auth/login" replace={true} />
-          //sessionStorage.clear()
+          sessionStorage.clear()
           throw new Error('Network response was not ok');
         }
         return response.json();
@@ -69,7 +69,7 @@ export const apiService = {
     .then(response => {
       if(!response.ok) {
         //<Navigate to="/auth/login" replace={true} />
-        //sessionStorage.clear()
+        sessionStorage.clear()
         throw new Error('Network response was not ok');
       }
       return response.json();
