@@ -42,6 +42,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
       border: 0,
     },
   }));
+
+    
+  TablePaginationActions.propTypes = {
+    count: PropTypes.number.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+  };
   
   
   function TablePaginationActions(props) {
@@ -97,18 +105,16 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
       </Box>
     );
   }
-  
-  TablePaginationActions.propTypes = {
-    count: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-  };
+
   
 
 export default function ProductsUpdate(props) {
 
     const { count, onPageChange } = props;
+
+    const [products_update_list, setProducts_update_list] = useState([]);
+    const [products_update_list_length, setProducts_update_list_length] = useState();
+    const [last_date_import, setLast_date_import] = useState([]);
 
     const Item = styled(Paper)(({ theme }) => ({
       backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -123,7 +129,7 @@ export default function ProductsUpdate(props) {
   
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
-      page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.productsUpdate.length) : 0;
+      page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products_update_list_length) : 0;
 
   
     const handleChangePage = (event, newPage) => {
@@ -135,9 +141,7 @@ export default function ProductsUpdate(props) {
       setPage(0);
     };
 
-    const [products_update_list, setProducts_update_list] = useState([]);
-    const [products_update_list_length, setProducts_update_list_length] = useState();
-    const [last_date_import, setLast_date_import] = useState([]);
+
 
     useEffect(() => {
 
@@ -168,7 +172,7 @@ export default function ProductsUpdate(props) {
                       {(rowsPerPage > 0
                           ? products_update_list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                           : products_update_list).map((row) => (
-                        <StyledTableRow key={row.id}>
+                        <StyledTableRow key={row.nom_produit}>
                           <StyledTableCell component="th" scope="row">
                             {row.nom_produit}
                           </StyledTableCell>
@@ -182,7 +186,7 @@ export default function ProductsUpdate(props) {
                         <TablePagination
                           rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                           colSpan={3}
-                          count={products_update_list_length}
+                          count={products_update_list_length || 0}
                           rowsPerPage={rowsPerPage}
                           page={page}
                           SelectProps={{

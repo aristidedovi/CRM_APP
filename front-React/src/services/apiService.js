@@ -32,8 +32,8 @@ export const apiService = {
     return fetch(apiUrl+'/'+endpoint, options)
       .then(response => {
         if (!response.ok) {
-          <Navigate to="/auth/login" replace={true} />
-          sessionStorage.clear()
+          //<Navigate to="/auth/login" replace={true} />
+          //sessionStorage.clear()
 
           throw new Error('Network response was not ok');
         }
@@ -53,8 +53,8 @@ export const apiService = {
       )
       .then(response => {
         if (!response.ok) {
-          <Navigate to="/auth/login" replace={true} />
-          sessionStorage.clear()
+          //<Navigate to="/auth/login" replace={true} />
+          //sessionStorage.clear()
           throw new Error('Network response was not ok');
         }
         return response.json();
@@ -68,8 +68,8 @@ export const apiService = {
     return fetch(apiUrl+'/'+endpoint, options)
     .then(response => {
       if(!response.ok) {
-        <Navigate to="/auth/login" replace={true} />
-        sessionStorage.clear()
+        //<Navigate to="/auth/login" replace={true} />
+        //sessionStorage.clear()
         throw new Error('Network response was not ok');
       }
       return response.json();

@@ -194,6 +194,7 @@ COPY public.categories (id, type) FROM stdin;
 
 COPY public.product_import_history (id, date_import, file_name, file_size, file_url) FROM stdin;
 63	2023-07-06 13:39:20.965613	2023-07-06T13:39:18.764888list-new - 08_06_2023.csv	618780	./scv_file/2023-07-06T13:39:18.764888list-new - 08_06_2023.csv
+105	2023-07-26 12:08:09.851726	2023-07-26T12:08:09.754942list-new - 08_06_2023.csv	618780	./scv_file/2023-07-26T12:08:09.754942list-new - 08_06_2023.csv
 \.
 
 
@@ -202,7 +203,7 @@ COPY public.product_import_history (id, date_import, file_name, file_size, file_
 --
 
 COPY public.products (index, "AR_Ref", "FA_CodeFamille", "AR_Design", "Colonne1", "AR_PrixVen", "StockTOTAL") FROM stdin;
-0	AF5XHD	ACCPOINT	UBIQUITI AIRFIBER AF-5XHD ACCESS POINT WIFI	ACCESS POINT & REPETITEUR	200000	10
+0	AF5XHD	ACCPOINT	UBIQUITI AIRFIBER AF-5XHD ACCESS POINT WIFI	ACCESS POINT & REPETITEUR	100000	10
 1	APACLITE	ACCPOINT	UBIQUITI UNIFI UAP-AC-LITE ACCESS POINT WIFI UAP AC LITE	ACCESS POINT & REPETITEUR	95000	0
 2	APACPRO	ACCPOINT	UBIQUITI UNIFI UAP AC PRO ACCESS POINT WIFI	ACCESS POINT & REPETITEUR	140000	12
 3	CPE210	ACCPOINT	TP-LINK CPE210 Point d'accès extérieur Wi-Fi N 300 Mbps 2.4GHz 9 dBi	ACCESS POINT & REPETITEUR	30000	0
@@ -8244,7 +8245,7 @@ COPY public.questions (id, question, answer, category, difficulty) FROM stdin;
 --
 
 COPY public.update_list (index, nom_produit, ancien_prix, nouveau_prix) FROM stdin;
-0	UBIQUITI AIRFIBER AF-5XHD ACCESS POINT WIFI	300000	200000
+0	UBIQUITI AIRFIBER AF-5XHD ACCESS POINT WIFI	200000	100000
 \.
 
 
@@ -8259,7 +8260,7 @@ SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
 -- Name: product_import_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: aristide
 --
 
-SELECT pg_catalog.setval('public.product_import_history_id_seq', 104, true);
+SELECT pg_catalog.setval('public.product_import_history_id_seq', 105, true);
 
 
 --
