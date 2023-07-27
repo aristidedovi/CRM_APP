@@ -170,7 +170,7 @@ export default function ProductsUpdate(props) {
                     </TableHead>
                     <TableBody>
                       {(rowsPerPage > 0
-                          ? products_update_list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          ? products_update_list?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                           : products_update_list).map((row) => (
                         <StyledTableRow key={row.nom_produit}>
                           <StyledTableCell component="th" scope="row">

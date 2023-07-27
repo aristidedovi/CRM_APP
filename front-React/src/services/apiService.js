@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
  
  // Remplacez par l'URL de base de votre API
  //const apiUrl = 'http://144.126.232.79:5000/api/v1';
- const apiUrl = 'http://localhost:5000/api/v1';
+ var apiUrl = '';
 
 
 const options = {
@@ -15,17 +15,18 @@ const options = {
   }
 
 
-  // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  //   // dev code
-  //   apiUrl = 'http://localhost:5000/api/v1';
-  // } else if(!process.env.NODE_ENV || process.env.NODE_ENV === 'production') {
-  //   // prod code
-  //   const currentHost = `${window.location.protocol}//${window.location.hostname}`;
-  //   apiUrl = currentHost+':5000/api/v1';
-  // }else {
-  //   // test code
-  //   apiUrl = 'http://localhost:5000/api/v1';
-  // }
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+     // dev code
+     apiUrl = 'http://localhost:5000/api/v1';
+
+   } else if(!process.env.NODE_ENV || process.env.NODE_ENV === 'production') {
+     // prod code
+     //const currentHost = `${window.location.protocol}//${window.location.hostname}`;
+     apiUrl = 'http://144.126.232.79:5000/api/v1';
+   }else {
+     // test code
+     apiUrl = 'http://localhost:5000/api/v1';
+   }
 
 export const apiService = {
   get: (endpoint) => {

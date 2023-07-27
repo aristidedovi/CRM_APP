@@ -322,8 +322,8 @@ def get_product_update_list():
         product = {
             'id': row[0],
             'nom_produit': row[1],
-            'ancien_prix': row[2],
-            'nouveau_prix': row[3],
+            'ancien_prix': product_yuupee_price(row[2]),
+            'nouveau_prix': product_yuupee_price(row[3]),
             # 'Colonne1': row[4],
             # 'AR_PrixVen': row[5],
             # 'YU_PRIX': product_yuupee_price(row[5]),
