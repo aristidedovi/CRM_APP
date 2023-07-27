@@ -85,7 +85,6 @@ const Index = (props) => {
           </Col>
         </Row>
       </Container>
-      <ToastContainer />
     </>
   );
 };

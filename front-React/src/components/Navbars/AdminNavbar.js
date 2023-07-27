@@ -35,7 +35,7 @@ import {
 } from "reactstrap";
 
 //Now let's add the toast messages for our errors.
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //JWT decode token
@@ -47,9 +47,35 @@ const AdminNavbar = (props) => {
   const navigate = useNavigate();
 
   var token = sessionStorage.getItem('Auth Token')
-  var user = jwt_decode(token);
 
-  console.log(user);
+  try {
+    var user = jwt_decode(token);
+
+
+  } catch (error) {
+    sessionStorage.clear()
+    toast.error(error.message)
+
+    // Handle any errors that might occur during decoding
+    setTimeout(() => {
+
+      navigate('/auth/login')
+      //window.location.reload();
+    }, "1000");
+   
+    
+    //window.location.reload()
+    //console.error('Error decoding token:', error.message);
+    
+  }
+  
+  // console.log(token)
+  // if(!token) {
+  //   var user = jwt_decode(token);
+  // } else {
+  //   sessionStorage.clear()
+  // }
+
 
   return (
     <>
@@ -85,7 +111,7 @@ const AdminNavbar = (props) => {
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      {user.email}
+                      {user?.email }
                     </span>
                   </Media>
                 </Media>
@@ -127,7 +153,6 @@ const AdminNavbar = (props) => {
           </Nav>
         </Container>
       </Navbar>
-      <ToastContainer />
     </>
   );
 };

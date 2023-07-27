@@ -4,8 +4,8 @@ import { Navigate } from "react-router-dom";
  
  
  // Remplacez par l'URL de base de votre API
- const apiUrl = 'http://144.126.232.79:5000/api/v1';
- //const apiUrl = 'http://localhost:5000/api/v1';
+ //const apiUrl = 'http://144.126.232.79:5000/api/v1';
+ const apiUrl = 'http://localhost:5000/api/v1';
 
 
 const options = {
@@ -31,12 +31,12 @@ export const apiService = {
   get: (endpoint) => {
     return fetch(apiUrl+'/'+endpoint, options)
       .then(response => {
-        if (!response.ok) {
-          //<Navigate to="/auth/login" replace={true} />
-          sessionStorage.clear()
+        // if (!response.ok) {
+        //   //<Navigate to="/auth/login" replace={true} />
+        //   //sessionStorage.clear()
 
-          throw new Error('Network response was not ok');
-        }
+        //   throw new Error('Network response was not ok');
+        // }
         return response.json();
       })
       .catch(error => {
@@ -52,11 +52,11 @@ export const apiService = {
         }
       )
       .then(response => {
-        if (!response.ok) {
-          //<Navigate to="/auth/login" replace={true} />
-          sessionStorage.clear()
-          throw new Error('Network response was not ok');
-        }
+        // if (!response.ok) {
+        //   //<Navigate to="/auth/login" replace={true} />
+        //   //sessionStorage.clear()
+        //   throw new Error('Network response was not ok');
+        // }
         return response.json();
       })
       .catch(error => {
@@ -67,11 +67,11 @@ export const apiService = {
   get_update_products: (endpoint) => {
     return fetch(apiUrl+'/'+endpoint, options)
     .then(response => {
-      if(!response.ok) {
-        //<Navigate to="/auth/login" replace={true} />
-        sessionStorage.clear()
-        throw new Error('Network response was not ok');
-      }
+      // if(!response.ok) {
+      //   //<Navigate to="/auth/login" replace={true} />
+      //   //sessionStorage.clear()
+      //   throw new Error('Network response was not ok');
+      // }
       return response.json();
     })
     .catch(error => {

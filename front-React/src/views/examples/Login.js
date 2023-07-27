@@ -55,9 +55,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const [authenticated, setauthenticated] = React.useState(
-    localStorage.getItem(localStorage.getItem("authenticated") || false)
-  );
 
   const [message, setMessage] = React.useState('')
 
@@ -71,7 +68,9 @@ const Login = () => {
         console.log(response);
         sessionStorage.setItem('Auth Token', response._tokenResponse.idToken);
         setTimeout(() => {
-          navigate('/admin/index')
+
+          navigate('/admin/index');
+          //window.location.reload();
         }, "1000");
         
 
@@ -217,7 +216,6 @@ const Login = () => {
           </Col>
         </Row>
       </Col>
-      <ToastContainer />
     </>
   );
 };

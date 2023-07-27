@@ -25,6 +25,7 @@ import "assets/scss/argon-dashboard-react.scss";
 
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
+import { ToastContainer } from "react-toastify";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -35,5 +36,6 @@ root.render(
       <Route path="/auth/*" element={<AuthLayout />} />
       <Route path="*" element={<Navigate to="/admin/index" replace />} />
     </Routes>
+    <ToastContainer />
   </BrowserRouter>
 );
