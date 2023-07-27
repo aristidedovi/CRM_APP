@@ -28,3 +28,4 @@ wcwidth==0.2.2
 werkzeug==1.0.1
 pandas==1.5.2
 firebase_admin==6.2.0
+pyopenssl==23.2.0
