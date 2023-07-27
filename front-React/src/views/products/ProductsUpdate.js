@@ -125,7 +125,7 @@ export default function ProductsUpdate(props) {
     }));
 
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
   
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
