@@ -263,7 +263,7 @@ def get_products():
             'AR_Design': row[3],
             'Colonne1': row[4],
             'AR_PrixVen': row[5],
-            'YU_PRIX': product_yuupee_price(row[5]),
+            'YU_PRIX': product_yuupee_price(int(row[5])),
             'StockTOTAL': row[6],
             # Add more attributes as needed
         }
@@ -322,8 +322,8 @@ def get_product_update_list():
         product = {
             'id': row[0],
             'nom_produit': row[1],
-            'ancien_prix': product_yuupee_price(row[2]),
-            'nouveau_prix': product_yuupee_price(row[3]),
+            'ancien_prix': product_yuupee_price(int(row[2])),
+            'nouveau_prix': product_yuupee_price(int(row[3])),
             # 'Colonne1': row[4],
             # 'AR_PrixVen': row[5],
             # 'YU_PRIX': product_yuupee_price(row[5]),
