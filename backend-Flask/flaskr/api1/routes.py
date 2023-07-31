@@ -133,83 +133,116 @@ def post_csv_file():
         file_size = os.stat(filepath).st_size
 
         #get old file
-        old_file = ProductImport.query.order_by(desc(ProductImport.id)).first()
-
-        # Ouvrir le premier fichier CSV et le lire dans un dictionnaire
-        with open(old_file.file_url, 'r') as file1:
-            csv_reader1 = csv.DictReader(file1)
-            produits1 = {}
-            for row in csv_reader1:
-                produits1[row['AR_Design']] = row['AR_PrixVen']
-
-        # Ouvrir le deuxième fichier CSV et le lire dans un dictionnaire
-        with open(filepath, 'r') as file2:
-            csv_reader2 = csv.DictReader(file2)
-            produits2 = {}
-            for row in csv_reader2:
-                produits2[row['AR_Design']] = row['AR_PrixVen']
-
-        # Parcourir les produits des deux fichiers et comparer les prix
-        for nom_produit in produits1.keys():
-            if nom_produit in produits2:
-                if produits1[nom_produit] != produits2[nom_produit]:
-                    print(f"Le prix du produit {nom_produit} a été mis à jour : {produits1[nom_produit]} -> {produits2[nom_produit]}")
-            else:
-                print(f"Le produit {nom_produit} a été supprimé du fichier 2.")
-
-        for nom_produit in produits2.keys():
-            if nom_produit not in produits1:
-                print(f"Le produit {nom_produit} a été ajouté dans le fichier 2 avec le prix {produits2[nom_produit]}.")
-
-
-        # Comparer les deux dictionnaires et stocker les différences dans une liste
-        differences = []
-        for nom_produit in produits1.keys():
-            if nom_produit in produits2:
-                if produits1[nom_produit] != produits2[nom_produit]:
-                    difference = {"nom_produit": nom_produit, "ancien_prix": produits1[nom_produit], "nouveau_prix": produits2[nom_produit]}
-                    differences.append(difference)
-            else:
-                difference = {"nom_produit": nom_produit, "ancien_prix": produits1[nom_produit], "nouveau_prix": None}
-                differences.append(difference)
-
-        for nom_produit in produits2.keys():
-            if nom_produit not in produits1:
-                difference = {"nom_produit": nom_produit, "ancien_prix": None, "nouveau_prix": produits2[nom_produit]}
-                differences.append(difference)
-
-        # Écrire les différences dans un nouveau fichier CSV
-        with open(os.path.join(current_app.config['FILE_UPLOADS'])+'/differences.csv', 'w', newline='') as csvfile:
-            fieldnames = ['nom_produit','ancien_prix', 'nouveau_prix']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            for difference in differences:
-                writer.writerow(difference)
-
-
-
-        product_import = ProductImport(datetime.now(), uploaded_file.filename, file_size, filepath)
-        product_import.insert()
-
-        with open(filepath) as file:
-                csv_file = csv.reader(file)
-                for row in csv_file:
-                    data.append(row)
+        #old_file = ProductImport.query.order_by(desc(ProductImport.id)).first()
 
         #engine=create_engine("postgresql+psycopg2://postgres:postgres@localhost:5432/yuupee_db")
         #engine=create_engine(environ.get('DEV_DATABASE_URI'))
         engine = db.get_engine()
 
-        df = pd.read_csv(filepath)
-        df2 = pd.read_csv(os.path.join(current_app.config['FILE_UPLOADS'])+'/differences.csv')
-        try:
-            df.to_sql('products', con=engine, if_exists='replace')
-            df2.to_sql('update_list', con=engine, if_exists='replace')
 
-        except Exception as e:
-            abort(422)
-        finally:
-            engine.dispose()
+        query = f"SELECT * FROM products;"
+        result = engine.execute(query)
+        
+
+         # Fetch all rows from the result
+        rows = result.fetchall()
+
+        # Check if the result is empty (no rows returned)
+        #print(rows)
+        if len(rows) == 0:
+            #connection.close()
+            print("The array is empty.")
+            df = pd.read_csv(filepath)
+            #df2 = pd.read_csv(os.path.join(current_app.config['FILE_UPLOADS'])+'/differences.csv')
+            try:
+                df.to_sql('products', con=engine, if_exists='replace')
+                #df2.to_sql('update_list', con=engine, if_exists='replace')
+
+            except Exception as e:
+                abort(422)
+            finally:
+                engine.dispose()
+            #return "No data to export."
+        else:
+            print("The array is not empty.")
+            old_filepath = os.path.join(current_app.config['FILE_UPLOADS'], 'exported_data.csv')
+            # Create a CSV file and write the data from the query result to it
+            with open(old_filepath, 'w', newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
+                csv_writer.writerow(result.keys())  # Write header row
+                csv_writer.writerows(rows)
+
+            # Ouvrir le premier fichier CSV et le lire dans un dictionnaire
+            with open(old_filepath, 'r') as file1:
+                csv_reader1 = csv.DictReader(file1)
+                produits1 = {}
+                for row in csv_reader1:
+                    produits1[row['AR_Design']] = row['AR_PrixVen']
+
+            # Ouvrir le deuxième fichier CSV et le lire dans un dictionnaire
+            with open(filepath, 'r') as file2:
+                csv_reader2 = csv.DictReader(file2)
+                produits2 = {}
+                for row in csv_reader2:
+                    produits2[row['AR_Design']] = row['AR_PrixVen']
+
+            # Parcourir les produits des deux fichiers et comparer les prix
+            # for nom_produit in produits1.keys():
+            #     if nom_produit in produits2:
+            #         if produits1[nom_produit] != produits2[nom_produit]:
+            #             print(f"Le prix du produit {nom_produit} a été mis à jour : {produits1[nom_produit]} -> {produits2[nom_produit]}")
+            #     else:
+            #         print(f"Le produit {nom_produit} a été supprimé du fichier 2.")
+
+            # for nom_produit in produits2.keys():
+            #     if nom_produit not in produits1:
+            #         print(f"Le produit {nom_produit} a été ajouté dans le fichier 2 avec le prix {produits2[nom_produit]}.")
+
+
+            # Comparer les deux dictionnaires et stocker les différences dans une liste
+            differences = []
+            for nom_produit in produits1.keys():
+                if nom_produit in produits2:
+                    if produits1[nom_produit] != produits2[nom_produit]:
+                        difference = {"nom_produit": nom_produit, "ancien_prix": produits1[nom_produit], "nouveau_prix": produits2[nom_produit]}
+                        differences.append(difference)
+                else:
+                    difference = {"nom_produit": nom_produit, "ancien_prix": produits1[nom_produit], "nouveau_prix": None}
+                    differences.append(difference)
+
+            for nom_produit in produits2.keys():
+                if nom_produit not in produits1:
+                    difference = {"nom_produit": nom_produit, "ancien_prix": None, "nouveau_prix": produits2[nom_produit]}
+                    differences.append(difference)
+
+            # Écrire les différences dans un nouveau fichier CSV
+            with open(os.path.join(current_app.config['FILE_UPLOADS'])+'/differences.csv', 'w', newline='') as csvfile:
+                fieldnames = ['nom_produit','ancien_prix', 'nouveau_prix']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for difference in differences:
+                    writer.writerow(difference)
+
+            product_import = ProductImport(datetime.now(), uploaded_file.filename, file_size, filepath)
+            product_import.insert()
+
+            with open(filepath) as file:
+                    csv_file = csv.reader(file)
+                    for row in csv_file:
+                        data.append(row)
+
+            
+
+            df = pd.read_csv(filepath)
+            df2 = pd.read_csv(os.path.join(current_app.config['FILE_UPLOADS'])+'/differences.csv')
+            try:
+                df.to_sql('products', con=engine, if_exists='replace')
+                df2.to_sql('update_list', con=engine, if_exists='replace')
+
+            except Exception as e:
+                abort(422)
+            finally:
+                engine.dispose()
 
 
 
