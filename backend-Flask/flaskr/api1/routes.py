@@ -152,6 +152,10 @@ def post_csv_file():
         if len(rows) == 0:
             #connection.close()
             print("The array is empty.")
+
+            product_import = ProductImport(datetime.now(), uploaded_file.filename, file_size, filepath)
+            product_import.insert()
+            
             df = pd.read_csv(filepath)
             #df2 = pd.read_csv(os.path.join(current_app.config['FILE_UPLOADS'])+'/differences.csv')
             try:
