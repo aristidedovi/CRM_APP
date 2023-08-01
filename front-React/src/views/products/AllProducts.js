@@ -97,7 +97,7 @@ const AllProducts = (props) => {
 
   var options = {
     headers: {
-      'Authorization': `Bearer ${sessionStorage.getItem('Auth Token')}`,
+      'Authorization': `Bearer ${localStorage.getItem('Auth Token')}`,
     }
   }
 

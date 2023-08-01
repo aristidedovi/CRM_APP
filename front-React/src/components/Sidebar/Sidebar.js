@@ -247,7 +247,7 @@ const Sidebar = (props) => {
           <Nav className="mb-md-3" navbar>
             <NavItem>
               <NavLink href="#" onClick={() => {
-                  sessionStorage.clear()
+                  localStorage.clear()
                   toast.info('Logout Success')
                   setTimeout(() => {
                     navigate('/auth/login')

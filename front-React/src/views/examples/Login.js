@@ -65,13 +65,13 @@ const Login = () => {
       signInWithEmailAndPassword(auth, email, password)
       .then((response) => {
         toast.success('Login Success')
-        console.log(response);
-        sessionStorage.setItem('Auth Token', response._tokenResponse.idToken);
+        //console.log(response);
+        localStorage.setItem('Auth Token', response._tokenResponse.idToken);
+        //window.location.reload();
+        
         setTimeout(() => {
-
           navigate('/admin/index');
-          //window.location.reload();
-        }, "1000");
+        }, "2000");
         
 
       })

@@ -92,6 +92,7 @@ def verify_firebase_token(func):
             # Remove "Bearer " prefix from the token
             id_token = id_token.replace('Bearer ', '')
             decoded_token = auth.verify_id_token(id_token)
+            print(decoded_token)
             # Perform additional validation or processing if needed
 
             return func(*args, **kwargs)

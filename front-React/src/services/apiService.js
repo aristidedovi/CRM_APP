@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-
- 
+import axios from 'axios';
  
  // Remplacez par l'URL de base de votre API
  //const apiUrl = 'http://144.126.232.79:5000/api/v1';
@@ -10,75 +9,131 @@ import { Navigate } from "react-router-dom";
 
 const options = {
     headers: {
-      'Authorization': `Bearer ${sessionStorage.getItem('Auth Token')}`,
+      'Authorization': `Bearer ${localStorage.getItem('Auth Token')}`,
     }
   }
+
+  const customHeaders = {
+    Authorization: `Bearer ${localStorage.getItem('Auth Token')}`,// Example of an authorization header
+    //'Custom-Header': 'Custom-Value', // Example of a custom header
+  };
 
 
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
      // dev code
-     apiUrl = 'http://localhost:5000/api/v1';
+     apiUrl = 'http://localhost:5000/api/v1/';
 
    } else if(!process.env.NODE_ENV || process.env.NODE_ENV === 'production') {
      // prod code
      //const currentHost = `${window.location.protocol}//${window.location.hostname}`;
-     apiUrl = 'https://144.126.232.79:5000/api/v1';
+     apiUrl = 'https://144.126.232.79:5000/api/v1/';
    }else {
      // test code
-     apiUrl = 'http://localhost:5000/api/v1';
+     apiUrl = 'http://localhost:5000/api/v1/';
    }
 
-export const apiService = {
-  get: (endpoint) => {
-    return fetch(apiUrl+'/'+endpoint, options)
-      .then(response => {
-        // if (!response.ok) {
-        //   //<Navigate to="/auth/login" replace={true} />
-        //   //sessionStorage.clear()
+   // Create an Axios instance with default configurations
+const apiInstance = axios.create({
+  baseURL: apiUrl,
+});
 
-        //   throw new Error('Network response was not ok');
-        // }
-        return response.json();
-      })
-      .catch(error => {
-        console.error('Fetch Error:', error);
-        throw error;
-      });
+// Request Interceptor
+apiInstance.interceptors.request.use(
+  (config) => {
+    // Modify the request config here (e.g., add headers)
+    config.headers['Authorization'] = `Bearer ${localStorage.getItem('Auth Token')}`;
+    return config;
   },
-  post: (endpoint, formData) => {
-    return fetch(apiUrl+'/'+endpoint,
-        {
-            method: 'POST',
-            body: formData,
-        }
-      )
-      .then(response => {
-        // if (!response.ok) {
-        //   //<Navigate to="/auth/login" replace={true} />
-        //   //sessionStorage.clear()
-        //   throw new Error('Network response was not ok');
-        // }
-        return response.json();
-      })
-      .catch(error => {
-        console.error('Fetch Error:', error);
-        throw error;
-      });
-  }, 
-  get_update_products: (endpoint) => {
-    return fetch(apiUrl+'/'+endpoint, options)
-    .then(response => {
-      // if(!response.ok) {
-      //   //<Navigate to="/auth/login" replace={true} />
-      //   //sessionStorage.clear()
-      //   throw new Error('Network response was not ok');
-      // }
-      return response.json();
-    })
-    .catch(error => {
-      console.error('Fetch Error', error);
-      throw error;
-    })
+  (error) => {
+    // Handle request error here
+    return Promise.reject(error);
   }
+);
+
+export const apiService = {
+  get: async (endpoint, options) => {
+    try {
+      const response = await apiInstance.get(`${endpoint}`);
+      return response.data;
+    } catch (error) {
+      console.error('Fetch Error:', error);
+      throw error;
+    }
+  },
+  post: async (endpoint, formData) => {
+    try{
+      const response = await apiInstance.get(`${endpoint}`,
+      {
+        method: 'POST',
+        body: formData,
+      });
+      return response.data;
+
+    } catch (error) {
+      console.error('Fetch Error:', error);
+      throw error;
+    }
+  },
+  get_update_products: async (endpoint) => {
+    try{
+      const response = await apiInstance.get(`${endpoint}`);
+      return response.data;
+
+    } catch (error) {
+      console.error('Fetch Error:', error);
+      throw error;
+    }
+  }
+  // get: (endpoint) => {
+  //   return fetch(`${apiUrl}/${endpoint}`, options)
+  //     .then(response => {
+  //       // if (!response.ok) {
+  //       //   //<Navigate to="/auth/login" replace={true} />
+  //       //   //sessionStorage.clear()
+
+  //       //   throw new Error('Network response was not ok');
+  //       // }
+  //       return response.json();
+  //     })
+  //     .catch(error => {
+  //       console.error('Fetch Error:', error);
+  //       throw error;
+  //     });
+  // },
+  // post: (endpoint, formData) => {
+  //   return fetch(`${apiUrl}/${endpoint}`,
+  //       {
+  //           method: 'POST',
+  //           body: formData,
+  //       }
+  //     )
+  //     .then(response => {
+  //       // if (!response.ok) {
+  //       //   //<Navigate to="/auth/login" replace={true} />
+  //       //   //sessionStorage.clear()
+  //       //   throw new Error('Network response was not ok');
+  //       // }
+  //       return response.json();
+  //     })
+  //     .catch(error => {
+  //       console.error('Fetch Error:', error);
+  //       throw error;
+  //     });
+  // }, 
+  // get_update_products: (endpoint) => {
+  //   return fetch(`${apiUrl}/${endpoint}`, options)
+  //   .then(response => {
+  //     // if(!response.ok) {
+  //     //   //<Navigate to="/auth/login" replace={true} />
+  //     //   //sessionStorage.clear()
+  //     //   throw new Error('Network response was not ok');
+  //     // }
+  //     return response.json();
+  //   })
+  //   .catch(error => {
+  //     console.error('Fetch Error', error);
+  //     throw error;
+  //   })
+  // }
   // Vous pouvez également ajouter des méthodes pour d'autres types de requêtes (POST, PUT, DELETE, etc.) selon vos besoins.
 };

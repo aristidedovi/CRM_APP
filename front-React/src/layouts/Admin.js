@@ -43,7 +43,7 @@ const Admin = (props) => {
   //const [user, setUser] = React.useState(null);
   //const auth = getAuth(firebase);
 
-  const [authToken, setAuthToken] = React.useState(sessionStorage.getItem('Auth Token'))
+  const [authToken, setAuthToken] = React.useState(localStorage.getItem('Auth Token'))
 
   React.useEffect(() => {
 

@@ -46,14 +46,14 @@ import jwt_decode from "jwt-decode";
 const AdminNavbar = (props) => {
   const navigate = useNavigate();
 
-  var token = sessionStorage.getItem('Auth Token')
+  var token = localStorage.getItem('Auth Token')
 
   try {
     var user = jwt_decode(token);
 
 
   } catch (error) {
-    sessionStorage.clear()
+    localStorage.clear()
     toast.error(error.message)
 
     // Handle any errors that might occur during decoding
@@ -138,7 +138,7 @@ const AdminNavbar = (props) => {
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem onClick={() => {
-                  sessionStorage.clear()
+                  localStorage.clear()
                   toast.info('Logout Success')
                   setTimeout(() => {
                     navigate('/auth/login')
