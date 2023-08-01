@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
+
  
  // Remplacez par l'URL de base de votre API
  //const apiUrl = 'http://144.126.232.79:5000/api/v1';
@@ -50,13 +53,23 @@ apiInstance.interceptors.request.use(
   }
 );
 
+
+
 export const apiService = {
   get: async (endpoint, options) => {
     try {
       const response = await apiInstance.get(`${endpoint}`);
       return response.data;
     } catch (error) {
-      console.error('Fetch Error:', error);
+      if (error.response.status === 401) {
+        localStorage.clear()
+        toast.error(error.message)
+        window.location.reload()
+
+      }else {
+        console.error('Fetch Error:', error);
+      }
+      
       throw error;
     }
   },
@@ -70,7 +83,17 @@ export const apiService = {
       return response.data;
 
     } catch (error) {
-      console.error('Fetch Error:', error);
+      
+      if (error.response.status === 401) {
+        localStorage.clear()
+        toast.error(error.message)
+        window.location.reload()
+        //useNavigate().navigate('/auth/login')
+
+      }else {
+        console.error('Fetch Error:', error);
+      }
+      //console.error('Fetch Error:', error);
       throw error;
     }
   },
@@ -80,7 +103,15 @@ export const apiService = {
       return response.data;
 
     } catch (error) {
-      console.error('Fetch Error:', error);
+      if (error.response.status === 401) {
+        localStorage.clear()
+        toast.error(error.message)
+        window.location.reload()
+
+      }else {
+        console.error('Fetch Error:', error);
+      }
+      //console.error('Fetch Error:', error);
       throw error;
     }
   }

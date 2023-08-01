@@ -92,7 +92,7 @@ def verify_firebase_token(func):
             # Remove "Bearer " prefix from the token
             id_token = id_token.replace('Bearer ', '')
             decoded_token = auth.verify_id_token(id_token)
-            print(decoded_token)
+            #print(decoded_token)
             # Perform additional validation or processing if needed
 
             return func(*args, **kwargs)
@@ -152,7 +152,7 @@ def post_csv_file():
         #print(rows)
         if len(rows) == 0:
             #connection.close()
-            print("The array is empty.")
+            #print("The array is empty.")
 
             product_import = ProductImport(datetime.now(), uploaded_file.filename, file_size, filepath)
             product_import.insert()
@@ -169,7 +169,7 @@ def post_csv_file():
                 engine.dispose()
             #return "No data to export."
         else:
-            print("The array is not empty.")
+            #print("The array is not empty.")
             old_filepath = os.path.join(current_app.config['FILE_UPLOADS'], 'exported_data.csv')
             # Create a CSV file and write the data from the query result to it
             with open(old_filepath, 'w', newline='') as csv_file:
