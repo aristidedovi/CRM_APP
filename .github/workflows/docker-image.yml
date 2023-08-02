@@ -38,11 +38,11 @@ jobs:
       with:
           node-version: 14
 
-    - name: Install Node.js Dependencies
-      run: cd front-React && npm install
+   # - name: Install Node.js Dependencies
+      #run: cd front-React && npm install
       
-    - name: Build React Application
-      run: cd front-React && CI=false npm run build
+    #- name: Build React Application
+     # run: cd front-React && CI=false npm run build
     
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -53,7 +53,7 @@ jobs:
       run: cd backend-Flask && pip install -r requirements.txt
     
     - name: Load initial data
-      run: PGPASSWORD=POSTGRES_PASSWORD psql -h localhost -U aristide -d crm_test -f ./crm.sql
+      run: PGPASSWORD=aristide psql -h localhost -U aristide -d crm_test -f ./crm.sql
       
     - name: Run Flask Unit Tests
       run: cd backend-Flask && python3 test_flaskr.py
