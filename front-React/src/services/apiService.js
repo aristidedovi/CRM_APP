@@ -45,7 +45,7 @@ const apiInstance = axios.create({
 const responseCache = new Map();
 
 // Custom caching duration (in milliseconds) - you can adjust this value as needed
-const CACHE_DURATION = 60000; // 1 minute
+const CACHE_DURATION = 10800000; // 3 heures
 
 // Request Interceptor
 apiInstance.interceptors.request.use(
@@ -117,7 +117,7 @@ export const apiService = {
     try{
       const cacheKey = `GET`;
       const cacheKeyUpdate = `GET-UPDATE`;
-      
+
       const response = await apiInstance.post(endpoint, formData,
       {
         headers: {
