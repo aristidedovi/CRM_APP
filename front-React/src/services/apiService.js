@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { setupCache } from 'axios-cache-interceptor';
+
 
 
  
@@ -40,6 +42,11 @@ const apiInstance = axios.create({
   baseURL: apiUrl,
 });
 
+const responseCache = new Map();
+
+// Custom caching duration (in milliseconds) - you can adjust this value as needed
+const CACHE_DURATION = 60000; // 1 minute
+
 // Request Interceptor
 apiInstance.interceptors.request.use(
   (config) => {
@@ -53,13 +60,46 @@ apiInstance.interceptors.request.use(
   }
 );
 
+//var productsDataCache = {};
+//var prodcutsUpdateDataCache = {};
+
+//const cache = setupCache(axios);
+
+// Custom function to check if a cached response is still valid
+function isCacheValid(cacheEntry) {
+  return cacheEntry && Date.now() - cacheEntry.timestamp <= CACHE_DURATION;
+}
+
 
 
 export const apiService = {
-  get: async (endpoint, options) => {
+  get: async (endpoint, options, data='data') => {
     try {
+      const cacheKey = `GET`;
+
+      const cachedResponse = responseCache.get(cacheKey);
+      if (isCacheValid(cachedResponse)) {
+        console.log('Serving cached GET response:', endpoint);
+        return cachedResponse.data;
+      }
+
+
       const response = await apiInstance.get(`${endpoint}`);
+       // Store the response in the cache
+      responseCache.set(cacheKey, {
+        data: response.data,
+        timestamp: Date.now(),
+      });
+
       return response.data;
+
+      // console.log(prodcutsUpdateDataCache)
+      // if (!productsDataCache[data]) {
+      //   const response = await apiInstance.get(`${endpoint}`);
+      //   productsDataCache[data] = response.data
+      // }
+      
+      // return productsDataCache[data];
     } catch (error) {
       if (error.response.status === 401) {
         localStorage.clear()
@@ -73,13 +113,28 @@ export const apiService = {
       throw error;
     }
   },
-  post: async (endpoint, formData) => {
+  post: async (endpoint, formData, data='data') => {
     try{
-      const response = await apiInstance.get(`${endpoint}`,
+      const cacheKey = `GET`;
+      const cacheKeyUpdate = `GET-UPDATE`;
+      
+      const response = await apiInstance.post(endpoint, formData,
       {
-        method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
+        },
       });
+
+      // Clear the cached response for this POST endpoint
+      responseCache.delete(cacheKey);
+      responseCache.delete(cacheKeyUpdate);
+
+      //productsDataCache = {}
+      //prodcutsUpdateDataCache = {}
+
+      //apiService.get()
+      //apiService.get_update_products()
+
       return response.data;
 
     } catch (error) {
@@ -97,10 +152,37 @@ export const apiService = {
       throw error;
     }
   },
-  get_update_products: async (endpoint) => {
+  get_update_products: async (endpoint, data='data') => {
     try{
+
+      const cacheKey = `GET-UPDATE`;
+
+      const cachedResponse = responseCache.get(cacheKey);
+      if (isCacheValid(cachedResponse)) {
+        console.log('Serving cached GET response:', endpoint);
+        return cachedResponse.data;
+      }
+
       const response = await apiInstance.get(`${endpoint}`);
+       // Store the response in the cache
+       responseCache.set(cacheKey, {
+        data: response.data,
+        timestamp: Date.now(),
+      });
+
+
       return response.data;
+      // if (!prodcutsUpdateDataCache[data]) {
+      //   const response = await apiInstance.get(`${endpoint}`);
+      //   prodcutsUpdateDataCache[data] = response.data
+      // }
+      // //prodcutsUpdateDataCache[data] = {}
+      // //console.log(prodcutsUpdateDataCache[data])
+      
+      // return prodcutsUpdateDataCache[data];
+
+      //const response = await apiInstance.get(`${endpoint}`);
+      //return response.data;
 
     } catch (error) {
       if (error.response.status === 401) {
