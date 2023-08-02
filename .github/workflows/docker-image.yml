@@ -53,7 +53,7 @@ jobs:
       run: cd backend-Flask && pip install -r requirements.txt
     
     - name: Load initial data
-      run: psql -h localhost -U aristide -d crm_test -f ./crm.sql
+      run: PGPASSWORD=POSTGRES_PASSWORD psql -h localhost -U aristide -d crm_test -f ./crm.sql
       
     - name: Run Flask Unit Tests
       run: cd backend-Flask && python3 test_flaskr.py
