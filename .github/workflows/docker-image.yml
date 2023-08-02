@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "new_feature" ]
   pull_request:
     branches: [ "main" ]
 
@@ -59,6 +59,6 @@ jobs:
       run: cd backend-Flask && python3 test_flaskr.py
 
 
-    - name: Build with docker-compose
-      run: docker-compose up -d 
+    #- name: Build with docker-compose
+      #run: docker-compose up -d 
 
