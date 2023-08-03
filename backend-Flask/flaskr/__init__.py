@@ -2,6 +2,7 @@ import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 
+
 # Instantiating global objects and variables
 db = SQLAlchemy()
 
@@ -21,6 +22,7 @@ def create_app(config=None):
     #print(app.config)
     # initializing application extentions
     db.init_app(app)
+    #cache = Cache(app)
     # bind all extentions to the app instance
     with app.app_context():
         # import blueprints
