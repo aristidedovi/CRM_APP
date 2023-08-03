@@ -159,7 +159,7 @@ const AllProducts = (props) => {
       });
 
       //get product import histories
-      apiService.get(`product_histories?page=${currentPage}`)
+      apiService.get_products_history(`product_histories?page=${currentPage}`)
       .then(json => {
         setProductHistories(json ? json['product_history'] : [])
         setHasNextPage(json ? json['has_next'] :  []);
@@ -556,7 +556,7 @@ const dt = useRef(null);
 
 
       //get product import histories
-      apiService.get(`product_histories?page=${currentPage}`)
+      apiService.get_products_history(`product_histories?page=${currentPage}`)
       .then(json => {
         setProductHistories(json ? json['product_history'] : [])
         setHasNextPage(json ? json['has_next'] :  []);
