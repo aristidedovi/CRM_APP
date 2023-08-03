@@ -113,6 +113,46 @@ export const apiService = {
       throw error;
     }
   },
+  get_products_history: async (endpoint, options, data='data') => {
+    try {
+      const cacheKey = `GET`;
+
+      const cachedResponse = responseCache.get(cacheKey);
+      if (isCacheValid(cachedResponse)) {
+        console.log('Serving cached GET response:', endpoint);
+        return cachedResponse.data;
+      }
+
+
+      const response = await apiInstance.get(`${endpoint}`);
+       // Store the response in the cache
+      responseCache.set(cacheKey, {
+        data: response.data,
+        timestamp: Date.now(),
+      });
+
+      return response.data;
+
+      // console.log(prodcutsUpdateDataCache)
+      // if (!productsDataCache[data]) {
+      //   const response = await apiInstance.get(`${endpoint}`);
+      //   productsDataCache[data] = response.data
+      // }
+      
+      // return productsDataCache[data];
+    } catch (error) {
+      if (error.response.status === 401) {
+        localStorage.clear()
+        toast.error(error.message)
+        window.location.reload()
+
+      }else {
+        console.error('Fetch Error:', error);
+      }
+      
+      throw error;
+    }
+  },
   post: async (endpoint, formData, data='data') => {
     try{
       const cacheKey = `GET`;

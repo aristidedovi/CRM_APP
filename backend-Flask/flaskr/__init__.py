@@ -1,9 +1,13 @@
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_caching import Cache
+
+
 
 # Instantiating global objects and variables
 db = SQLAlchemy()
+cache = Cache()
 
 
 def create_app(config=None):
@@ -21,6 +25,8 @@ def create_app(config=None):
     #print(app.config)
     # initializing application extentions
     db.init_app(app)
+    cache.init_app(app)
+    #cache = Cache(app)
     # bind all extentions to the app instance
     with app.app_context():
         # import blueprints
@@ -29,6 +35,9 @@ def create_app(config=None):
         app.register_blueprint(api1, url_prefix='/api/v1')
         # create all tables in the database
         db.create_all()
+        #cache.set(cKey, data)
+        
+        #cache.init_app(app)
 
         # force 404 and 405 errors to return a json object if requested from the api blueprint
         @app.errorhandler(404)

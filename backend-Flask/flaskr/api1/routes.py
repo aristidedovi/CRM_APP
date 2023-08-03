@@ -1,6 +1,6 @@
 # routes.py
 # for rendering api routes
-from flaskr import db
+from flaskr import db, cache
 from flaskr.models import ProductImport
 from . import api1
 from flask import abort, request, jsonify, current_app
@@ -15,6 +15,8 @@ from firebase_admin import credentials, auth
 from datetime import datetime
 from sqlalchemy import desc
 from datetime import date
+from flask_caching import Cache
+import redis
 
 
 
@@ -73,6 +75,8 @@ def after_request(response):
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
+#cache = Cache(current_app)
+#cache.init_app(current_app)
 
 def verify_firebase_token(func):
     def wrapper(*args, **kwargs):
@@ -116,7 +120,6 @@ def generate_token():
 
     # user = auth.sign_in_with_email_and_password(email, password)
     # print(user)
-
 
 @api1.route('/upload_data', methods=['POST'])
 def post_csv_file():
@@ -251,6 +254,8 @@ def post_csv_file():
 
 
         #print(data)
+        # Clear the entire cache to update all entries
+        cache.clear()
         return jsonify({
             'success': True,
             'message': 'Import data success'
@@ -272,6 +277,7 @@ def post_csv_file():
 
 @api1.route('/products', methods=['GET'])
 @verify_firebase_token
+@cache.cached(timeout=3600)  # Cache the response for 60 minute
 def get_products():
     #print(request.headers.get('Authorization'))
     # Establish a connection to the PostgreSQL database
@@ -316,6 +322,7 @@ def get_products():
 
 @api1.route('/product_histories', methods=['GET'])
 @verify_firebase_token
+@cache.cached(timeout=3600)  # Cache the response for 60 minute
 def get_product_histories():
 
     # paginate questions, and store the current page questions in a list
@@ -338,6 +345,7 @@ def get_product_histories():
 
 @api1.route('/product_update_list', methods=['GET'])
 @verify_firebase_token
+@cache.cached(timeout=3600)  # Cache the response for 60 minute
 def get_product_update_list():
 
     engine = db.get_engine()

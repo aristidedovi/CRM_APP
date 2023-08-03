@@ -17,9 +17,19 @@ services:
       - 5000:5000
     depends_on:
       - db
+      - redis
     environment:
       - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
       - FLASK_CONFIG=production
+      - REDIS_URI=redis://redis:6379/0
+    networks:
+      - crm_app-network
+  
+  # Redis service
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
     networks:
       - crm_app-network
 
