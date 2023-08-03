@@ -21,6 +21,7 @@ services:
     environment:
       - PROD_DATABASE_URI=postgresql+psycopg2://aristide:aristide@db:5432/crm_prod
       - FLASK_CONFIG=production
+      - REDIS_URI=redis://redis:6379/0
     networks:
       - crm_app-network
   
