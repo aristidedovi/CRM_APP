@@ -32,7 +32,9 @@ jobs:
         image: redis:latest
         ports:
           - 6379:6379
-        options: --entrypoint redis-server --loglevel warning
+        options: >-
+          --entrypoint redis-server
+          --loglevel warning
 
 
 
