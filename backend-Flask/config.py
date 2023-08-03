@@ -14,6 +14,7 @@ class Config:
     QUESTIONS_PER_PAGE = 3
     FILE_UPLOADS = "./scv_file"
     CACHE_TYPE = 'redis'
+    
 
 
 
@@ -40,4 +41,4 @@ class TestConfig(DevConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI')
     FILE_UPLOADS = "./scv_file_test"
-    CACHE_REDIS_URL = 'redis://localhost:6379/0'
+    CACHE_REDIS_URL = 'redis://localhost:6379/1'

@@ -1,6 +1,6 @@
 # routes.py
 # for rendering api routes
-from flaskr import db
+from flaskr import db, cache
 from flaskr.models import ProductImport
 from . import api1
 from flask import abort, request, jsonify, current_app
@@ -75,7 +75,8 @@ def after_request(response):
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
-cache = Cache(current_app)
+#cache = Cache(current_app)
+#cache.init_app(current_app)
 
 def verify_firebase_token(func):
     def wrapper(*args, **kwargs):
