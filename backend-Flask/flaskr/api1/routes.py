@@ -322,7 +322,7 @@ def get_products():
 
 @api1.route('/product_histories', methods=['GET'])
 @verify_firebase_token
-@cache.cached(timeout=3600)  # Cache the response for 60 minute
+#@cache.cached(timeout=3600)  # Cache the response for 60 minute
 def get_product_histories():
 
     # paginate questions, and store the current page questions in a list

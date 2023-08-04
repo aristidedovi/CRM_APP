@@ -93,7 +93,20 @@ const AllProducts = (props) => {
 
   const [productHistories, setProductHistories] = React.useState([]);
 
-  const navigate = useNavigate();
+  const [activeNav, setActiveNav] = useState(1);
+  const [chartExample1Data, setChartExample1Data] = useState("data1");
+
+//Datatable variable
+  const [yuupee_produits, setYuupee_produits] = React.useState([]);
+  const [productFilter, setProductFilter] = React.useState([]);
+  const [productDialog, setProductDialog] = React.useState(false);
+  const [submitted, setSubmitted] = React.useState(false);
+  const [products, setProducts] = React.useState(null);
+  const [product, setProduct] = React.useState({});
+  //const [product, setProduct] = React.useState(emptyProduct);
+
+
+  //const navigate = useNavigate();
 
   var options = {
     headers: {
@@ -107,7 +120,7 @@ const AllProducts = (props) => {
   //   .then(response => response.json());
   // }
   
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState();
   const [hasNextPage, setHasNextPage] = useState(false);
   const [pages, setPages] = useState(1);
   //const [currentPage, setCurrentPage] = useState(1)
@@ -137,7 +150,9 @@ const AllProducts = (props) => {
 
   const handleNextPage = () => {
     //console.log('next')
+    console.log(currentPage)
     setCurrentPage((prevPage) => prevPage + 1);
+    console.log(currentPage)
   };
   var pagesCount = []
 
@@ -173,7 +188,7 @@ const AllProducts = (props) => {
 
       //setUploadedData(false)
 
-  }, [currentPage, last_date_import]);
+  }, [currentPage]);
 
   const get_pagination =  pages => {
     let content = []
@@ -228,17 +243,6 @@ const AllProducts = (props) => {
       StockTOTAL: 1,
     }
   ]
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
-
-//Datatable variable
-  const [yuupee_produits, setYuupee_produits] = React.useState([]);
-  const [productFilter, setProductFilter] = React.useState([]);
-  const [productDialog, setProductDialog] = React.useState(false);
-  const [submitted, setSubmitted] = React.useState(false);
-  const [products, setProducts] = React.useState(null);
-  const [product, setProduct] = React.useState({});
-  //const [product, setProduct] = React.useState(emptyProduct);
 
   
 

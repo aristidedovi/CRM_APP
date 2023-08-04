@@ -43,6 +43,7 @@ const apiInstance = axios.create({
 });
 
 const responseCache = new Map();
+const responseCacheProductHistory = new Map();
 
 // Custom caching duration (in milliseconds) - you can adjust this value as needed
 const CACHE_DURATION = 10800000; // 3 heures
@@ -73,13 +74,13 @@ function isCacheValid(cacheEntry) {
 
 
 export const apiService = {
-  get: async (endpoint, options, data='data') => {
+  get: async (endpoint, data='data') => {
     try {
       const cacheKey = `GET`;
 
       const cachedResponse = responseCache.get(cacheKey);
       if (isCacheValid(cachedResponse)) {
-        console.log('Serving cached GET response:', endpoint);
+        //console.log('Serving cached GET response:', endpoint);
         return cachedResponse.data;
       }
 
@@ -113,23 +114,24 @@ export const apiService = {
       throw error;
     }
   },
-  get_products_history: async (endpoint, options, data='data') => {
+  get_products_history: async (endpoint, data='data') => {
     try {
-      const cacheKey = `GET`;
+      const cacheKey = `GET-HYSTORY`;
 
-      const cachedResponse = responseCache.get(cacheKey);
-      if (isCacheValid(cachedResponse)) {
-        console.log('Serving cached GET response:', endpoint);
-        return cachedResponse.data;
-      }
+      // const cachedResponseProductHistory = responseCacheProductHistory.get(cacheKey);
+      // if (isCacheValid(cachedResponseProductHistory)) {
+      //   //console.log('Serving cached GET response:', endpoint);
+      //   return cachedResponseProductHistory.data;
+      // }
 
 
       const response = await apiInstance.get(`${endpoint}`);
+      console.log(response.data)
        // Store the response in the cache
-      responseCache.set(cacheKey, {
-        data: response.data,
-        timestamp: Date.now(),
-      });
+      // responseCache.set(cacheKey, {
+      //   data: response.data,
+      //   timestamp: Date.now(),
+      // });
 
       return response.data;
 
@@ -199,7 +201,7 @@ export const apiService = {
 
       const cachedResponse = responseCache.get(cacheKey);
       if (isCacheValid(cachedResponse)) {
-        console.log('Serving cached GET response:', endpoint);
+        //console.log('Serving cached GET response:', endpoint);
         return cachedResponse.data;
       }
 
