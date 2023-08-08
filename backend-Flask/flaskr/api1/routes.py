@@ -16,8 +16,6 @@ from datetime import datetime
 from sqlalchemy import desc
 from datetime import date
 from flask_caching import Cache
-import redis
-
 
 
 
@@ -276,7 +274,7 @@ def post_csv_file():
         #uploaded_df = pd.read_csv(data_file_path)
 
 @api1.route('/products', methods=['GET'])
-@verify_firebase_token
+#@verify_firebase_token
 @cache.cached(timeout=3600)  # Cache the response for 60 minute
 def get_products():
     #print(request.headers.get('Authorization'))
@@ -322,7 +320,7 @@ def get_products():
 
 @api1.route('/product_histories', methods=['GET'])
 @verify_firebase_token
-#@cache.cached(timeout=3600)  # Cache the response for 60 minute
+@cache.cached(timeout=3600)  # Cache the response for 60 minute
 def get_product_histories():
 
     # paginate questions, and store the current page questions in a list

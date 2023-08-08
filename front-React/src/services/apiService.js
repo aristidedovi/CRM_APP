@@ -3,6 +3,8 @@ import { Navigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { setupCache } from 'axios-cache-interceptor';
+import Progress from "react-progress-2";
+
 
 
 
@@ -78,19 +80,24 @@ export const apiService = {
     try {
       const cacheKey = `GET`;
 
-      const cachedResponse = responseCache.get(cacheKey);
-      if (isCacheValid(cachedResponse)) {
-        //console.log('Serving cached GET response:', endpoint);
-        return cachedResponse.data;
-      }
+      // const cachedResponse = responseCache.get(cacheKey);
+      // if (isCacheValid(cachedResponse)) {
+      //   //console.log('Serving cached GET response:', endpoint);
+      //   return cachedResponse.data;
+      // }
 
-
+      Progress.show();
       const response = await apiInstance.get(`${endpoint}`);
        // Store the response in the cache
-      responseCache.set(cacheKey, {
-        data: response.data,
-        timestamp: Date.now(),
-      });
+      // responseCache.set(cacheKey, {
+      //   data: response.data,
+      //   timestamp: Date.now(),
+      // });
+
+      if (response.data) {
+        Progress.hide();
+      }
+
 
       return response.data;
 
@@ -112,6 +119,8 @@ export const apiService = {
       }
       
       throw error;
+    } finally {
+      //Progress.hideAll()
     }
   },
   get_products_history: async (endpoint, data='data') => {
@@ -126,7 +135,7 @@ export const apiService = {
 
 
       const response = await apiInstance.get(`${endpoint}`);
-      console.log(response.data)
+      //console.log(response.data)
        // Store the response in the cache
       // responseCache.set(cacheKey, {
       //   data: response.data,
@@ -199,18 +208,18 @@ export const apiService = {
 
       const cacheKey = `GET-UPDATE`;
 
-      const cachedResponse = responseCache.get(cacheKey);
-      if (isCacheValid(cachedResponse)) {
-        //console.log('Serving cached GET response:', endpoint);
-        return cachedResponse.data;
-      }
+      // const cachedResponse = responseCache.get(cacheKey);
+      // if (isCacheValid(cachedResponse)) {
+      //   //console.log('Serving cached GET response:', endpoint);
+      //   return cachedResponse.data;
+      // }
 
       const response = await apiInstance.get(`${endpoint}`);
        // Store the response in the cache
-       responseCache.set(cacheKey, {
-        data: response.data,
-        timestamp: Date.now(),
-      });
+      //  responseCache.set(cacheKey, {
+      //   data: response.data,
+      //   timestamp: Date.now(),
+      // });
 
 
       return response.data;
