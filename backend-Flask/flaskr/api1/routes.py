@@ -274,7 +274,7 @@ def post_csv_file():
         #uploaded_df = pd.read_csv(data_file_path)
 
 @api1.route('/products', methods=['GET'])
-#@verify_firebase_token
+@verify_firebase_token
 @cache.cached(timeout=3600)  # Cache the response for 60 minute
 def get_products():
     #print(request.headers.get('Authorization'))
