@@ -119,6 +119,8 @@ export const apiService = {
       }
       
       throw error;
+    } finally {
+      Progress.hideAll();
     }
   },
   get_products_history: async (endpoint, data='data') => {
