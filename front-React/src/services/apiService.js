@@ -86,7 +86,7 @@ export const apiService = {
         return cachedResponse.data;
       }
 
-      Progress.show();
+      //Progress.show();
       const response = await apiInstance.get(`${endpoint}`);
        // Store the response in the cache
       responseCache.set(cacheKey, {
@@ -94,9 +94,9 @@ export const apiService = {
         timestamp: Date.now(),
       });
 
-      if (response.data) {
-        Progress.hide();
-      }
+      // if (response.data) {
+      //   Progress.hide();
+      // }
 
 
       return response.data;
@@ -119,9 +119,10 @@ export const apiService = {
       }
       
       throw error;
-    } finally {
-      Progress.hideAll();
-    }
+    } 
+    // finally {
+    //   Progress.hideAll();
+    // }
   },
   get_products_history: async (endpoint, data='data') => {
     try {
