@@ -290,6 +290,17 @@ def get_products():
     product_histories = ProductImport.query.order_by(desc(ProductImport.id)).first()
     #print(product_histories.date_import)
 
+    # Créer un objet de date à partir des valeurs
+    date_donnee = product_histories.date_import
+
+    # Date actuelle
+    date_actuelle = datetime.now()
+
+    # Calculer la différence entre les deux dates
+    import_day_difference = date_actuelle - date_donnee
+
+    #print(difference)
+
     with engine.connect() as connection:
         result = connection.execute(sql_command)
     
@@ -314,7 +325,7 @@ def get_products():
         'success': True,
         'products': products,
         'products_size': len(products),
-        'last_date_import': product_histories.date_import.strftime("%m/%d/%Y, %H:%M:%S")
+        'last_date_import': import_day_difference.days
     })
 
 
@@ -358,6 +369,15 @@ def get_product_update_list():
     
     product_histories = ProductImport.query.order_by(desc(ProductImport.id)).first()
 
+    # Créer un objet de date à partir des valeurs
+    date_donnee = product_histories.date_import
+
+    # Date actuelle
+    date_actuelle = datetime.now()
+
+    # Calculer la différence entre les deux dates
+    import_day_difference = date_actuelle - date_donnee
+
     #print(result)
     products = []
     for row in result:
@@ -380,7 +400,7 @@ def get_product_update_list():
             'success': True,
             'products': products,
             'products_size': len(products),
-            'last_date_import': product_histories.date_import.strftime("%m/%d/%Y, %H:%M:%S")
+            'last_date_import': import_day_difference.days
 
         })
 
