@@ -110,14 +110,14 @@ const Header = (props) => {
                         </div>
                       </Col>
                     </Row>
-                     {/* 
                      <p className="mt-3 mb-0 text-muted text-sm">
+                      {/* 
                      <span className="text-danger mr-2">
                         <i className="fas fa-arrow-down" /> 3.48%
                       </span>{" "} 
                       <span className="text-nowrap">Uploaded, {last_date_import_update_product} days</span>
+                      */}
                     </p>
-                    */}
                   </CardBody>
                 </Card>
               </Col>
