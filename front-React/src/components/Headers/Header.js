@@ -117,7 +117,7 @@ const Header = (props) => {
                       </span>{" "}
                       <span className="text-nowrap">Uploaded, {last_date_import_update_product} days</span>
                       */}
-                      <span className="text-nowrap"></span>
+                      <span className="text-nowrap">Uploaded,</span>
                       
                     </p>
                   </CardBody>
