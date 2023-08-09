@@ -86,7 +86,7 @@ const Header = (props) => {
                       {/* <span className="text-success mr-2">
                         <i className="fa fa-arrow-up" /> {props.last_date_import}
                       </span>{" "} */}
-                      <span className="text-nowrap">Uploaded at, {last_date_import}</span>
+                      <span className="text-nowrap">Uploaded, {last_date_import} days</span>
                     </p>
                   </CardBody>
                 </Card>
@@ -114,7 +114,7 @@ const Header = (props) => {
                       {/* <span className="text-danger mr-2">
                         <i className="fas fa-arrow-down" /> 3.48%
                       </span>{" "} */}
-                      <span className="text-nowrap">Uploaded at, {last_date_import_update_product}</span>
+                      <span className="text-nowrap">Uploaded, {last_date_import_update_product} days</span>
                     </p>
                   </CardBody>
                 </Card>
