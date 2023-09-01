@@ -47,6 +47,10 @@ def product_yuupee_price(price):
 
     return prix_yuupee
 
+def product_price_for_btob(price):
+    return price+(price * (10/100))
+
+
 
 
 @api1.after_request
@@ -316,6 +320,7 @@ def get_products():
             'Colonne1': row[4],
             'AR_PrixVen': row[5],
             'YU_PRIX': product_yuupee_price(int(row[5]) if row[5] is not None else 0),
+            'YU_PRIX2': product_price_for_btob(product_yuupee_price(int(row[5]) if row[5] is not None else 0)),
             'StockTOTAL': row[6],
             # Add more attributes as needed
         }

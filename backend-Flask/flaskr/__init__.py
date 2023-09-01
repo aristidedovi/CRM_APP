@@ -31,8 +31,10 @@ def create_app(config=None):
     with app.app_context():
         # import blueprints
         from .api1 import api1
+        from .front import front
         # register blueprints
         app.register_blueprint(api1, url_prefix='/api/v1')
+        app.register_blueprint(front, url_prefix='')
         # create all tables in the database
         db.create_all()
         #cache.set(cKey, data)

@@ -269,7 +269,7 @@ const dt = useRef(null);
       { field: 'AR_Design', header: 'AR_Design' },
       { field: 'Colonne1', header: 'Colonne1' },
       { field: 'YU_PRIX', header: 'YU_PRIX' },
-      { field: 'YU_PRIX_TTC', header: 'YU_PRIX_TTC' },
+      { field: 'YU_PRIX2', header: 'YU_PRIX2' },
       { field: 'YU_PRIX_B_B', header: 'YU_PRIX_B_B' },
       { field: 'StockTOTAL', header: 'StockTOTAL' }
   ];
@@ -391,10 +391,12 @@ const dt = useRef(null);
   const priceBodyTemplate = (rowData) => {
     //console.log(rowData)
     let value_ht= 'HT '+(rowData.YU_PRIX.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }));
-    //let value_ttc= 'TTC '+(rowData.YU_PRIX_TTC.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }));
+    let value_btob= ''+(rowData.YU_PRIX2.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }));
     //console.log(value_ht)
     return (
-      <p><b>{value_ht}</b></p>
+      <>
+        <p style={{ minWidth: '12rem', fontSize: '0.8rem', fontWeight: 'bold'   }}><b>{value_ht}</b>({value_btob})</p>
+      </>
       );
   }
   
@@ -404,7 +406,7 @@ const dt = useRef(null);
     let value_ht= 'HT '+(rowData.YU_PRIX_B_B.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }));
     let value_ttc= 'TTC '+(rowData.YU_PRIX_B_B_TTC.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }));
     return (
-          <p><b>{value_ht}</b><br/>{value_ttc}</p>
+          <p><b>{value_ht}</b>({value_ttc})</p>
           );
   }
 
@@ -687,7 +689,7 @@ const dt = useRef(null);
                 {/*<Column field="Sur_Site_Web" body={statusBodyTemplate} style={{ fontSize: '0.7rem', fontWeight: 'bold'  }} header="Sur le site web" howFilterMenu={false}></Column>*/}
                 {/*<Column field="Sur_Site_Web" body={statusBodyTemplate} style={{ fontSize: '0.7rem', fontWeight: 'bold'  }} header="Sur le site web" howFilterMenu={false} filter filterElement={statusRowFilterTemplate} ></Column>*/}
                 <Column field="YU_PRIX" header="Prix Yuupee BtoC (HT/TTC)" body={priceBodyTemplate} style={{ fontSize: '0.7rem', fontWeight: 'bold'  }} sortable></Column>
-                {/*<Column field="YU_PRIX_B_B" header="Prix Yuupee BtoB (HT/TTC)" body={priceBtoBBodyTemplate} style={{ fontSize: '0.7rem', fontWeight: 'bold', backgroundColor: '#FEFEE2'  }} sortable></Column>*/}
+                {/*<Column field="YU_PRIX2" header="Prix Yuupee BtoB (HT/TTC)" body={priceBtoBBodyTemplate} style={{ fontSize: '0.7rem', fontWeight: 'bold', backgroundColor: '#FEFEE2'  }} sortable></Column>*/}
                 <Column field="StockTOTAL" header="Stock" style={{ fontSize: '0.7rem', fontWeight: 'bold'  }} sortable></Column>
                 <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '5rem' }}></Column>
             </DataTable>

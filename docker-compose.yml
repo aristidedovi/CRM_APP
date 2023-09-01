@@ -1,13 +1,13 @@
 version: '3'
 services:
-  # frontend:
-  #   build:
-  #     context: ./front-React
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   networks:
-  #     - crm_app-network
+  frontend:
+    build:
+      context: ./front-React
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - crm_app-network
 
   backend:
     build:
