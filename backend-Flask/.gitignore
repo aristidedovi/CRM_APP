@@ -17,6 +17,8 @@ build/
 docs/_build/
 .vscode
 #.env
+static/
+templates/
 
 # Coverage reports
 htmlcov/
