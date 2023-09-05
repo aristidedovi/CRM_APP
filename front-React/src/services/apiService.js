@@ -33,8 +33,10 @@ const options = {
    } else if(!process.env.NODE_ENV || process.env.NODE_ENV === 'production') {
      // prod code
      //const currentHost = `${window.location.protocol}//${window.location.hostname}`;
-     apiUrl = 'https://144.126.232.79:5000/api/v1/';
-   }else {
+     //apiUrl = 'https://144.126.232.79:5000/api/v1/';
+     apiUrl = 'http://144.126.232.79:5000/api/v1/';
+
+    }else {
      // test code
      apiUrl = 'http://localhost:5000/api/v1/';
    }
