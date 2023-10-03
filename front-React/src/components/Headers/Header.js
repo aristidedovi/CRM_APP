@@ -100,7 +100,7 @@ const Header = (props) => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Total Update product
+                          Total Update
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">{update_products_list_length}</span>
                       </div>
