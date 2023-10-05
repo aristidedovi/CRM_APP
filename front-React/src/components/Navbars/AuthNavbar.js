@@ -72,7 +72,7 @@ const AdminNavbar = () => {
               </NavItem>
               */
               }
-              <NavItem>
+              {/* <NavItem>
                 <NavLink
                   className="nav-link-icon"
                   to="/auth/register"
@@ -87,7 +87,7 @@ const AdminNavbar = () => {
                   <i className="ni ni-key-25" />
                   <span className="nav-link-inner--text">Login</span>
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
               {
               /*
               <NavItem>

@@ -273,9 +273,9 @@ const Sidebar = (props) => {
           </Nav>
           <Nav className="mb-md-3" navbar>
             <NavItem className="active-pro active">
-              <NavLink href="#">
+              <NavLink href="https://www.yuupee.com">
                 <i className="ni ni-spaceship" />
-                Upgrade to PRO
+                YUUPEE
               </NavLink>
             </NavItem>
           </Nav>
