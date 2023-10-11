@@ -16,9 +16,10 @@
   - [4.1. General](#41-general)
   - [4.2. error Handlers](#42-error-handlers)
   - [4.3. Endpoints](#43-endpoints)
-    - [4.3.1. POST `/upload_data`](#431-post-upload-csv-product-file)
-    - [4.3.2. GET `/product_histories`](#432-get-product-file-upload-histories)
-    - [4.3.3. GET `/products`](#433-get-all-products)
+    - [4.3.1. GET `/upload_data`](#431-get-upload_data)
+    - [4.3.2. GET `/product_histories`](#432-get-product_histories)
+    - [4.3.3. GET `/products`](#433-get-products)
+    - [4.3.4. GET `/product_update_list`](#434-get-product_update_list)
 - [5. Testing](#5-testing)
 
 ## 1. Getting Started
@@ -146,10 +147,9 @@ The following errors will be reported:
 #### 4.3.1. GET `/upload_data`
 - Loading the csv file of the products with a header>. AR_Ref,FA_CodeFamille,AR_Design,Colonne1, AR_PrixVen, Stock TOTAL
 - Request body type : file `uploaded-file`
-- Returns:  jsonify({
-            'success': True,
-            'message': 'Import data success'
-            }) if success.
+- Returns an objet with 2 key
+  - bol `success`: True
+  - str `message`: 'Import data success'
 
 #### 4.3.2. GET `/product_histories`
 - Fetches a upload historique of paginated product csv file, as well as a list of csv file uploaded dictionaries, in which the keys are the csv name, csv date uploades, size, url.
@@ -157,7 +157,7 @@ The following errors will be reported:
     - optional URL queries:
         - `page`: an optional integer for a page number, which is used to fetch 3 questions for the corresponding page.
         - default: `1`
-- Returns: An object with 3 keys:
+- Returns: An object with 5 keys:
     - `csv history`: a list that contains paginated csv file objects, that coorespond to the `page` query.
         - bol `success`: True,
         - dic `product_history`: product_history_dict,
@@ -166,10 +166,21 @@ The following errors will be reported:
         - int `current_page`: product_histories.page,
 
 #### 4.3.3. GET `/products`
-- Fetches a dictionary of paginated questions that are in the category specified in the URL parameters.
-- Returns: An object with 2 keys:
+- Fetches an array of all products.
+- Returns: An object with 4 keys:
         - bol `success`: True,
         - array `products`: products
+        - int `products_size`: len(products)
+        - int `last_date_import`: import_day_difference.days
+
+#### 4.3.4. GET `/product_update_list`
+- Fetches an array of all products update.
+- - Returns: An object with 4 keys:
+        - bol `success`: True,
+        - array `products`: products
+        - int `products_size`: len(products)
+        - int `last_date_import`: import_day_difference.days
+
 
 ## 5. Testing
 
