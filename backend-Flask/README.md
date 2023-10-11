@@ -158,7 +158,7 @@ The following errors will be reported:
         - `page`: an optional integer for a page number, which is used to fetch 3 questions for the corresponding page.
         - default: `1`
 - Returns: An object with 5 keys:
-    - `csv history`: a list that contains paginated csv file objects, that coorespond to the `page` query.
+    - `csv history`: a list that contains paginated csv file objects, that coorespond to the `page` query
         - bol `success`: True,
         - dic `product_history`: product_history_dict,
         - int `has_next`: product_histories.has_next,
@@ -167,19 +167,19 @@ The following errors will be reported:
 
 #### 4.3.3. GET `/products`
 - Fetches an array of all products.
-- Returns: An object with 4 keys:
-        - bol `success`: True,
-        - array `products`: products
-        - int `products_size`: len(products)
-        - int `last_date_import`: import_day_difference.days
+- Returns: An object with 4 keys
+  - bol `success`: True,
+  - array `products`: products
+  - int `products_size`: len(products)
+  - int `last_date_import`: import_day_difference.days
 
 #### 4.3.4. GET `/product_update_list`
 - Fetches an array of all products update.
-- - Returns: An object with 4 keys:
-        - bol `success`: True,
-        - array `products`: products
-        - int `products_size`: len(products)
-        - int `last_date_import`: import_day_difference.days
+- Returns: An object with 4 keys
+  - bol `success`: True,
+  - array `products`: products
+  - int `products_size`: len(products)
+  - int `last_date_import`: import_day_difference.days
 
 
 ## 5. Testing
